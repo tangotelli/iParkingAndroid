@@ -6,5 +6,7 @@
     <string name="login">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
     <string name="required_field">Campo obligatorio</string>
-    <string name="auth_failure">Error de autenticación: $</string>
+    <!-- Errores -->
+    <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
+    <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>
 </resources>
