@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">iParking</string>
+    <!-- Login Activity -->
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Contraseña</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="sign_up">Registrarse</string>
+    <string name="required_field">Campo obligatorio</string>
+    <string name="auth_failure">Error de autenticación: $</string>
+</resources>
