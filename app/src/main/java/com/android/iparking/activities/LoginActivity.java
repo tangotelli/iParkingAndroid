@@ -1,7 +1,13 @@
 package com.android.iparking.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -24,12 +30,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class LoginActivity extends AppCompatActivity {
-
-    private static final String API_BASE_URL = "https://192.168.1.141:8000";
+public class LoginActivity extends AppCompatActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     private APIService apiService;
     private User user;
+
+    private static final String API_BASE_URL = "https://192.168.1.141:8000";
+    private static final int LOCATION_PERMISSION_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,12 +87,16 @@ public class LoginActivity extends AppCompatActivity {
 
     private void completeLogin(UserPojo userPojo) {
         this.user = User.fromPojo(userPojo);
-        //lanzar actividad del mapa
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                "Todo bien",
-                Snackbar.LENGTH_LONG
-        ).show();
+        if (ContextCompat
+                .checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat
+                    .requestPermissions(LoginActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            LOCATION_PERMISSION_CODE);
+        } else {
+            this.showMap();
+        }
     }
 
     private void incompleteLogin(int code) {
@@ -94,6 +106,29 @@ public class LoginActivity extends AppCompatActivity {
                 getString(R.string.auth_failure),
                 Snackbar.LENGTH_LONG
         ).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == LOCATION_PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                this.showMap();
+            } else {
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.permission_denied),
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+        }
+    }
+
+    private void showMap() {
+        Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+        intent.putExtra("user", this.user);
+        startActivity(intent);
     }
 
     public void signin(View view) {

@@ -9,4 +9,7 @@
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>
+    <!-- Permisos -->
+    <string name="permission_accepted">Permisos aprobados</string>
+    <string name="permission_denied">Permisos denegados</string>
 </resources>
