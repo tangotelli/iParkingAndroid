@@ -12,7 +12,11 @@ import android.os.Bundle;
 import android.os.Looper;
 
 import com.android.iparking.R;
+import com.android.iparking.connectivity.APIService;
+import com.android.iparking.connectivity.RetrofitFactory;
+import com.android.iparking.models.Parking;
 import com.android.iparking.models.User;
+import com.android.iparking.pojo.ParkingPojo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -23,6 +27,20 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.snackbar.Snackbar;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -32,6 +50,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private User user;
+    private APIService apiService;
+    private List<Parking> parkings;
+    private List<Marker> markers;
 
     private static final float STREETS_ZOOM_LEVEL = 15;
 
@@ -44,6 +65,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
         this.getLocationUpdates();
         this.user = (User) getIntent().getSerializableExtra("user");
+        this.apiService = RetrofitFactory.setUpRetrofit();
+        this.markers = new ArrayList<>();
     }
 
     @SuppressLint("MissingPermission")
@@ -52,7 +75,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.map = googleMap;
         this.map.setOnMyLocationButtonClickListener(() -> {
             if (deviceLocation != null) {
-                zoomToCurrentLocation();
+                this.zoomToCurrentLocation();
+                this.findClosestParkings();
                 return true;
             } else {
                 return false;
@@ -65,6 +89,44 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
         if (deviceLocation != null) {
             zoomToCurrentLocation();
+        }
+    }
+
+    private void findClosestParkings() {
+        Call<ParkingPojo[][]> call_async = apiService.findAll();
+        call_async.enqueue(new Callback<ParkingPojo[][]>() {
+            @Override
+            public void onResponse(Call<ParkingPojo[][]> call, Response<ParkingPojo[][]> response) {
+                if (response.isSuccessful()) {
+                    showClosestParkings(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ParkingPojo[][]> call, Throwable t) {
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        //getString(R.string.connection_failure),
+                        "ERROR " + t.getMessage(),
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
+
+    private void showClosestParkings(ParkingPojo[][] body) {
+        this.parkings = Arrays.stream(body)
+                .flatMap(Stream::of)
+                .map(Parking::fromPojo)
+                .collect(Collectors.toList());
+        if (!(this.parkings.isEmpty())) {
+            for (Parking parking : parkings) {
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(parking.getParkingLocation().toLatLng())
+                        .title(parking.getName()));
+                marker.setTag(parking);
+                this.markers.add(marker);
+            }
         }
     }
 

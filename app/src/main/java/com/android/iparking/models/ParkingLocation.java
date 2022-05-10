@@ -1,5 +1,8 @@
 package com.android.iparking.models;
 
+import com.android.iparking.pojo.LocationPojo;
+import com.google.android.gms.maps.model.LatLng;
+
 public class ParkingLocation {
 
     private Double latitude;
@@ -24,5 +27,13 @@ public class ParkingLocation {
 
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
+    }
+
+    public static ParkingLocation fromPojo(LocationPojo locationPojo) {
+        return new ParkingLocation(locationPojo.getLatitude(), locationPojo.getLongitude());
+    }
+
+    public LatLng toLatLng() {
+        return new LatLng(this.latitude, this.longitude);
     }
 }

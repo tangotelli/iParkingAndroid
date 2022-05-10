@@ -1,5 +1,7 @@
 package com.android.iparking.models;
 
+import com.android.iparking.pojo.ParkingPojo;
+
 public class Parking {
 
     private String id;
@@ -55,6 +57,17 @@ public class Parking {
 
     public void setParkingLocation(ParkingLocation parkingLocation) {
         this.parkingLocation = parkingLocation;
+    }
+
+    public static Parking fromPojo(ParkingPojo parkingPojo) {
+        return new ParkingBuilder()
+                .id(parkingPojo.getId())
+                .name(parkingPojo.getName())
+                .address(parkingPojo.getAddress())
+                .bookingFare(parkingPojo.getBookingFare())
+                .stayFare(parkingPojo.getStayFare())
+                .location(ParkingLocation.fromPojo(parkingPojo.getLocation()))
+                .build();
     }
 
     public static class ParkingBuilder implements ParkingBuilders.Id, ParkingBuilders.Name,

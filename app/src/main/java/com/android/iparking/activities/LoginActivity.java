@@ -17,6 +17,7 @@ import android.widget.EditText;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.MyHttpClient;
+import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.User;
 import com.android.iparking.pojo.UserPojo;
 import com.google.android.material.snackbar.Snackbar;
@@ -36,23 +37,13 @@ public class LoginActivity extends AppCompatActivity
     private APIService apiService;
     private User user;
 
-    private static final String API_BASE_URL = "https://192.168.1.141:8000";
     private static final int LOCATION_PERMISSION_CODE = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        this.setUpRetrofit();
-    }
-
-    private void setUpRetrofit() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(MyHttpClient.getUnsafeOkHttpClient())
-                .build();
-        apiService = retrofit.create(APIService.class);
+        this.apiService = RetrofitFactory.setUpRetrofit();
     }
 
     public void login(View view) {
