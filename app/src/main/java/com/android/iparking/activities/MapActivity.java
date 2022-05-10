@@ -2,7 +2,6 @@ package com.android.iparking.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -24,7 +23,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.material.snackbar.Snackbar;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -35,7 +33,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private LocationCallback locationCallback;
     private User user;
 
-    private static final int LOCATION_PERMISSION_CODE = 100;
     private static final float STREETS_ZOOM_LEVEL = 15;
 
     @Override
@@ -53,16 +50,28 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
+        this.map.setOnMyLocationButtonClickListener(() -> {
+            if (deviceLocation != null) {
+                zoomToCurrentLocation();
+                return true;
+            } else {
+                return false;
+            }
+        });
         if (ContextCompat
                 .checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             this.map.setMyLocationEnabled(true);
         }
         if (deviceLocation != null) {
-            LatLng current = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLng(current));
-            map.moveCamera(CameraUpdateFactory.zoomTo(STREETS_ZOOM_LEVEL));
+            zoomToCurrentLocation();
         }
+    }
+
+    private void zoomToCurrentLocation() {
+        LatLng current = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
+        map.moveCamera(CameraUpdateFactory.newLatLng(current));
+        map.moveCamera(CameraUpdateFactory.zoomTo(STREETS_ZOOM_LEVEL));
     }
 
     @SuppressLint("MissingPermission")
