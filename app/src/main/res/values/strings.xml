@@ -6,9 +6,25 @@
     <string name="login">Iniciar sesión</string>
     <string name="sign_up">Registrarse</string>
     <string name="required_field">Campo obligatorio</string>
+    <!-- Signin Activity -->
+    <string name="hint_name">Nombre completo</string>
+    <string name="hint_repeat_password">Repita contraseña</string>
+    <string name="passwords_do_not_match">Las contraseñas no coinciden</string>
+    <!-- Permissions Activity -->
+    <string name="permissions_text">
+        Ha denegado los permisos necesarios para que iParking conozca su ubicación. Sin estos
+        permisos, el funcionamiento de la aplicación es imposible, puesto que sin conocer su
+        posición en el mapa no podremos mostrarle los aparcamientos más cercanos.
+        \n
+        \n
+        Si desea utilizar la aplicación, pulse el botón inferior y acepte conceder a iParking los
+        permisos de ubicación. Si no desea conceder estos permisos, no podrá utilizar la aplicación.
+    </string>
+    <string name="permissions_button">Permisos</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>
+    <string name="signin_failure">El email introducido pertenece a otra cuenta existente.</string>
     <!-- Permisos -->
     <string name="permission_accepted">Permisos aprobados</string>
     <string name="permission_denied">Permisos denegados</string>
