@@ -21,6 +21,10 @@
         permisos de ubicación. Si no desea conceder estos permisos, no podrá utilizar la aplicación.
     </string>
     <string name="permissions_button">Permisos</string>
+    <!-- Map Activity -->
+    <string name="route_button">Ruta</string>
+    <string name="book_button">Reserva</string>
+    <string name="stay_button">Estancia</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>

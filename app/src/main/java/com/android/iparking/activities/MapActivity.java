@@ -6,10 +6,14 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
+import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
@@ -29,11 +33,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -46,33 +50,51 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private GoogleMap map;
     private Location deviceLocation;
-    private FusedLocationProviderClient fusedLocationClient;
-    private LocationRequest locationRequest;
-    private LocationCallback locationCallback;
     private User user;
     private APIService apiService;
     private List<Parking> parkings;
     private List<Marker> markers;
+    private BottomSheetBehavior bottomSheetBehavior;
 
     private static final float STREETS_ZOOM_LEVEL = 15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         setContentView(R.layout.activity_map);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        this.setUpBottomSheet();
         this.getLocationUpdates();
         this.user = (User) getIntent().getSerializableExtra("user");
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.markers = new ArrayList<>();
     }
 
+    private void setUpBottomSheet() {
+        LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
+        this.bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+        this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
     @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
         this.map = googleMap;
+        this.setUpMapListeners();
+        if (ContextCompat
+                .checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            this.map.setMyLocationEnabled(true);
+        }
+        if (deviceLocation != null) {
+            zoomToCurrentLocation();
+        }
+    }
+
+    private void setUpMapListeners() {
         this.map.setOnMyLocationButtonClickListener(() -> {
             if (deviceLocation != null) {
                 this.zoomToCurrentLocation();
@@ -82,14 +104,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 return false;
             }
         });
-        if (ContextCompat
-                .checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            this.map.setMyLocationEnabled(true);
-        }
-        if (deviceLocation != null) {
-            zoomToCurrentLocation();
-        }
+        this.map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(@NonNull Marker marker) {
+                if (marker.getTag() != null) {
+                    showParkingDetail((Parking) marker.getTag());
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+    }
+
+    private void showParkingDetail(Parking parking) {
+        ((TextView) findViewById(R.id.bottomSheetName)).setText(parking.getName());
+        ((TextView) findViewById(R.id.bottomSheetAddress)).setText(parking.getAddress());
+        ((TextView) findViewById(R.id.bottomSheetBookingFare))
+                .setText(String.format("%s euros", parking.getBookingFare()));
+        ((TextView) findViewById(R.id.bottomSheetStayFare))
+                .setText(String.format("%s euros/minute", parking.getStayFare()));
+        this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
 
     private void findClosestParkings() {
@@ -138,13 +173,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     @SuppressLint("MissingPermission")
     private void getLocationUpdates() {
-        this.fusedLocationClient = LocationServices
+        FusedLocationProviderClient fusedLocationClient = LocationServices
                 .getFusedLocationProviderClient(this);
-        this.locationRequest = LocationRequest.create();
+        LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setInterval(60000);
         locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        this.locationCallback = new LocationCallback() {
+        LocationCallback locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 if (locationResult == null) {
@@ -160,8 +195,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         if (ContextCompat
                 .checkSelfPermission(MapActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            this.fusedLocationClient.requestLocationUpdates(this.locationRequest,
-                    this.locationCallback, Looper.getMainLooper());
+            fusedLocationClient.requestLocationUpdates(locationRequest,
+                    locationCallback, Looper.getMainLooper());
         }
+    }
+
+    public void bookSpot(View view) {
+
     }
 }
