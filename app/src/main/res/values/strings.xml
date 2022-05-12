@@ -25,6 +25,13 @@
     <string name="route_button">Ruta</string>
     <string name="book_button">Reserva</string>
     <string name="stay_button">Estancia</string>
+    <!-- Book Spot Activity -->
+    <string name="book_spot">Reserva una plaza</string>
+    <string name="parking">Parking</string>
+    <string name="date">Fecha</string>
+    <string name="choose_vehicle">Elija un vehículo</string>
+    <string name="register_vehicle">Registrar un vehículo</string>
+    <string name="checkout">Confirmar y pagar</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>

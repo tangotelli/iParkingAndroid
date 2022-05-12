@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.BookSpotActivity">
+
+    <TextView
+        android:id="@+id/tvBooking"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin"
+        android:layout_centerHorizontal="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:padding="@dimen/card_view_padding"
+        android:textSize="@dimen/title_text_size"
+        android:text="@string/book_spot"/>
+
+    <LinearLayout
+        android:id="@+id/layoutParking"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/tvBooking"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_marginHorizontal="@dimen/component_margin">
+
+        <TextView
+            android:id="@+id/labelParking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/form_margin"
+            android:text="@string/parking"
+            android:textSize="@dimen/label_text_size" />
+
+        <TextView
+            android:id="@+id/tvParking"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/form_margin"
+            android:textSize="@dimen/label_text_size" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layoutDate"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@+id/layoutParking"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_marginHorizontal="@dimen/component_margin">
+
+        <TextView
+            android:id="@+id/labelDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/form_margin"
+            android:text="@string/date"
+            android:textSize="@dimen/label_text_size" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/form_margin"
+            android:textSize="@dimen/label_text_size" />
+
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/spinnerVehicle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_below="@+id/layoutDate"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_below="@id/spinnerVehicle"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_marginHorizontal="@dimen/component_margin">
+
+        <Button
+            android:id="@+id/buttonRegisterVehicle"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/button_padding"
+            android:layout_margin="@dimen/button_margin"
+            android:text="@string/register_vehicle"/>
+
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="@dimen/button_padding"
+            android:layout_margin="@dimen/button_margin"
+            android:text="@string/checkout"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

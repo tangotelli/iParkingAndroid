@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -201,6 +202,12 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void bookSpot(View view) {
+        this.createIntent(BookSpotActivity.class);
+    }
 
+    private void createIntent(Class<?> cls) {
+        Intent intent = new Intent(MapActivity.this, cls);
+        intent.putExtra("user", this.user);
+        startActivity(intent);
     }
 }

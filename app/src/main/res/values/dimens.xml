@@ -19,7 +19,7 @@
 
     <!-- Text sizes decided by the developers. -->
     <dimen name="title_text_size">30sp</dimen>
-    <dimen name="quiz_text_size">20sp</dimen>
+    <dimen name="label_text_size">20sp</dimen>
 
     <!-- Component sizes decided by the developers. -->
     <dimen name="card_view_height">200dp</dimen>
