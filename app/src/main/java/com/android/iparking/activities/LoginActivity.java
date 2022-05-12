@@ -66,7 +66,6 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<UserPojo> call, Throwable t) {
-                //incompleteLogin();
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         getString(R.string.connection_failure),
@@ -112,17 +111,26 @@ public class LoginActivity extends AppCompatActivity
                         getString(R.string.permission_denied),
                         Snackbar.LENGTH_LONG
                 ).show();
+                this.askForPermissions();
             }
         }
     }
 
     private void showMap() {
-        Intent intent = new Intent(LoginActivity.this, MapActivity.class);
+        this.createIntent(MapActivity.class);
+    }
+
+    private void askForPermissions() {
+        this.createIntent(PermissionsActivity.class);
+    }
+
+    private void createIntent(Class<?> cls) {
+        Intent intent = new Intent(LoginActivity.this, cls);
         intent.putExtra("user", this.user);
         startActivity(intent);
     }
 
     public void signin(View view) {
-
+        startActivity(new Intent(LoginActivity.this, SigninActivity.class));
     }
 }

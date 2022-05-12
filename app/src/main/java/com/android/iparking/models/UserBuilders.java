@@ -15,6 +15,8 @@ public interface UserBuilders {
     }
 
     interface Optional {
+        UserBuilders.Optional password(String password);
+
         User build();
     }
 }
