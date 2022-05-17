@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.PayActivity">
+
+    <EditText
+        android:id="@+id/etCard"
+        android:layout_width="@dimen/field_width_standard"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_card"
+        android:inputType="text"/>
+
+    <LinearLayout
+        android:id="@+id/layoutExpiringDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_below="@id/etCard"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_marginHorizontal="@dimen/component_margin">
+
+        <EditText
+            android:id="@+id/etExpiringMonth"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_expiring_month"
+            android:inputType="number"/>
+
+        <EditText
+            android:id="@+id/etExpiringYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_expiring_year"
+            android:inputType="number"/>
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/etCVC"
+        android:layout_width="@dimen/field_width_standard"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutExpiringDate"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_cvc"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/buttonPay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/etCVC"
+        android:padding="@dimen/button_padding"
+        android:layout_margin="@dimen/button_margin"
+        android:text="@string/pay"
+        android:onClick="pay"/>
+
+</RelativeLayout>

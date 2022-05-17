@@ -1,8 +1,15 @@
 package com.android.iparking.activities;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +22,7 @@ import android.widget.TextView;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
+import com.android.iparking.dtos.BookingFormDTO;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.VehicleDTO;
@@ -39,7 +47,9 @@ public class BookSpotActivity extends AppCompatActivity {
     private Parking parking;
     private APIService apiService;
     private String selectedVehicle;
-    
+    private ActivityResultLauncher<Intent> activityResultLauncher;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +60,7 @@ public class BookSpotActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.tvParking)).setText(this.parking.getName());
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.findUserVehicles();
+        this.registerActivityResultLauncher();
     }
 
     private String getCurrentDate() {
@@ -133,7 +144,34 @@ public class BookSpotActivity extends AppCompatActivity {
         return view;
     }
 
-    public void confirm(View view) {
+    private void registerActivityResultLauncher() {
+        this.activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == PayActivity.PAYMENT_COMPLETED) {
+                        //TO-DO make booking via controller
+                        /*BookingFormDTO bookingForm = new BookingFormDTO();
+                        bookingForm.setEmail(this.user.getEmail());
+                        bookingForm.setParkingId(this.parking.getId());
+                        bookingForm.setVehicle(this.selectedVehicle);*/
+                    } else if (result.getResultCode() == PayActivity.PAYMENT_FAILED) {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                "Pago fallido",
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                    } else {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                "Pago cancelado",
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                    }
+                });
+    }
 
+    public void confirm(View view) {
+        this.activityResultLauncher
+                .launch(new Intent(BookSpotActivity.this, PayActivity.class));
     }
 }

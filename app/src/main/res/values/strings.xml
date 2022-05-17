@@ -32,6 +32,12 @@
     <string name="choose_vehicle">Elija un vehículo</string>
     <string name="register_vehicle">Registrar un vehículo</string>
     <string name="checkout">Confirmar y pagar</string>
+    <!-- Pay Activity -->
+    <string name="pay">Pagar</string>
+    <string name="hint_card">Nº Tarjeta</string>
+    <string name="hint_cvc">CVC</string>
+    <string name="hint_expiring_month">Mes Expiración</string>
+    <string name="hint_expiring_year">Año Expiración</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>
