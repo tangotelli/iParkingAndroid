@@ -1,6 +1,6 @@
 package com.android.iparking.models;
 
-import com.android.iparking.pojo.LocationPojo;
+import com.android.iparking.dtos.LocationDTO;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.io.Serializable;
@@ -31,8 +31,8 @@ public class ParkingLocation implements Serializable {
         this.longitude = longitude;
     }
 
-    public static ParkingLocation fromPojo(LocationPojo locationPojo) {
-        return new ParkingLocation(locationPojo.getLatitude(), locationPojo.getLongitude());
+    public static ParkingLocation fromPojo(LocationDTO locationDTO) {
+        return new ParkingLocation(locationDTO.getLatitude(), locationDTO.getLongitude());
     }
 
     public LatLng toLatLng() {

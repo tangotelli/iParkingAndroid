@@ -1,11 +1,11 @@
-package com.android.iparking.pojo;
+package com.android.iparking.dtos;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class UserPojo {
+public class UserDTO {
 
     @SerializedName("Id")
     @Expose

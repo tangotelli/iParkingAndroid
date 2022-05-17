@@ -21,7 +21,7 @@ import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.User;
-import com.android.iparking.pojo.ParkingPojo;
+import com.android.iparking.dtos.ParkingDTO;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -131,17 +131,17 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void findClosestParkings() {
-        Call<ParkingPojo[][]> call_async = apiService.findAll();
-        call_async.enqueue(new Callback<ParkingPojo[][]>() {
+        Call<ParkingDTO[][]> call_async = apiService.findAll();
+        call_async.enqueue(new Callback<ParkingDTO[][]>() {
             @Override
-            public void onResponse(Call<ParkingPojo[][]> call, Response<ParkingPojo[][]> response) {
+            public void onResponse(Call<ParkingDTO[][]> call, Response<ParkingDTO[][]> response) {
                 if (response.isSuccessful()) {
                     showClosestParkings(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ParkingPojo[][]> call, Throwable t) {
+            public void onFailure(Call<ParkingDTO[][]> call, Throwable t) {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         //getString(R.string.connection_failure),
@@ -152,10 +152,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         });
     }
 
-    private void showClosestParkings(ParkingPojo[][] body) {
+    private void showClosestParkings(ParkingDTO[][] body) {
         this.parkings = Arrays.stream(body)
                 .flatMap(Stream::of)
-                .map(Parking::fromPojo)
+                .map(Parking::fromDTO)
                 .collect(Collectors.toList());
         if (!(this.parkings.isEmpty())) {
             for (Parking parking : parkings) {

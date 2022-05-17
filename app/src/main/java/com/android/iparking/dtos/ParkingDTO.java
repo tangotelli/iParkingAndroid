@@ -1,11 +1,11 @@
-package com.android.iparking.pojo;
+package com.android.iparking.dtos;
 
 import javax.annotation.Generated;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class ParkingPojo {
+public class ParkingDTO {
 
     @SerializedName("Id")
     @Expose
@@ -24,7 +24,7 @@ public class ParkingPojo {
     private Double stayFare;
     @SerializedName("Location")
     @Expose
-    private LocationPojo location;
+    private LocationDTO location;
 
     public String getId() {
         return id;
@@ -66,11 +66,11 @@ public class ParkingPojo {
         this.stayFare = stayFare;
     }
 
-    public LocationPojo getLocation() {
+    public LocationDTO getLocation() {
         return location;
     }
 
-    public void setLocation(LocationPojo location) {
+    public void setLocation(LocationDTO location) {
         this.location = location;
     }
 }

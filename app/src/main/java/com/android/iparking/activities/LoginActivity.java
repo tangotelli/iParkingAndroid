@@ -9,27 +9,19 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.view.View;
 import android.widget.EditText;
 
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
-import com.android.iparking.connectivity.MyHttpClient;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.User;
-import com.android.iparking.pojo.UserPojo;
+import com.android.iparking.dtos.UserDTO;
 import com.google.android.material.snackbar.Snackbar;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class LoginActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -53,10 +45,10 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void login(String email, String password) {
-        Call<UserPojo> call_async = apiService.login(email, password);
-        call_async.enqueue(new Callback<UserPojo>() {
+        Call<UserDTO> call_async = apiService.login(email, password);
+        call_async.enqueue(new Callback<UserDTO>() {
             @Override
-            public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
                     completeLogin(response.body());
                 } else {
@@ -65,7 +57,7 @@ public class LoginActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<UserPojo> call, Throwable t) {
+            public void onFailure(Call<UserDTO> call, Throwable t) {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         getString(R.string.connection_failure),
@@ -75,8 +67,8 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    private void completeLogin(UserPojo userPojo) {
-        this.user = User.fromPojo(userPojo);
+    private void completeLogin(UserDTO userDTO) {
+        this.user = User.fromDTO(userDTO);
         if (ContextCompat
                 .checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

@@ -17,13 +17,11 @@ import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.User;
-import com.android.iparking.models.Vehicle;
-import com.android.iparking.pojo.VehiclePojo;
+import com.android.iparking.dtos.VehicleDTO;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
@@ -61,17 +59,17 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     private void findUserVehicles() {
-        Call<VehiclePojo[][]> call_async = apiService.findAllVehiclesByUser(this.user.getEmail());
-        call_async.enqueue(new Callback<VehiclePojo[][]>() {
+        Call<VehicleDTO[][]> call_async = apiService.findAllVehiclesByUser(this.user.getEmail());
+        call_async.enqueue(new Callback<VehicleDTO[][]>() {
             @Override
-            public void onResponse(Call<VehiclePojo[][]> call, Response<VehiclePojo[][]> response) {
+            public void onResponse(Call<VehicleDTO[][]> call, Response<VehicleDTO[][]> response) {
                 if (response.isSuccessful()) {
                     setUpSpinner(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<VehiclePojo[][]> call, Throwable t) {
+            public void onFailure(Call<VehicleDTO[][]> call, Throwable t) {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         //getString(R.string.connection_failure),
@@ -82,11 +80,11 @@ public class BookSpotActivity extends AppCompatActivity {
         });
     }
 
-    private void setUpSpinner(VehiclePojo[][] body) {
+    private void setUpSpinner(VehicleDTO[][] body) {
         Spinner spinner = (Spinner) findViewById(R.id.spinnerVehicle);
         List<String> vehicles = Arrays.stream(body)
                 .flatMap(Stream::of)
-                .map(VehiclePojo::getNickname)
+                .map(VehicleDTO::getNickname)
                 .collect(Collectors.toList());
         vehicles.add(0, getString(R.string.choose_vehicle));
         ArrayAdapter<String> adapter = this.createAdapter(vehicles);
@@ -133,5 +131,9 @@ public class BookSpotActivity extends AppCompatActivity {
             ((TextView) view).setTextColor(Color.BLACK);
         }
         return view;
+    }
+
+    public void confirm(View view) {
+
     }
 }

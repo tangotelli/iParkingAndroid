@@ -1,6 +1,6 @@
 package com.android.iparking.models;
 
-import com.android.iparking.pojo.ParkingPojo;
+import com.android.iparking.dtos.ParkingDTO;
 
 import java.io.Serializable;
 
@@ -61,14 +61,14 @@ public class Parking implements Serializable {
         this.parkingLocation = parkingLocation;
     }
 
-    public static Parking fromPojo(ParkingPojo parkingPojo) {
+    public static Parking fromDTO(ParkingDTO parkingDTO) {
         return new ParkingBuilder()
-                .id(parkingPojo.getId())
-                .name(parkingPojo.getName())
-                .address(parkingPojo.getAddress())
-                .bookingFare(parkingPojo.getBookingFare())
-                .stayFare(parkingPojo.getStayFare())
-                .location(ParkingLocation.fromPojo(parkingPojo.getLocation()))
+                .id(parkingDTO.getId())
+                .name(parkingDTO.getName())
+                .address(parkingDTO.getAddress())
+                .bookingFare(parkingDTO.getBookingFare())
+                .stayFare(parkingDTO.getStayFare())
+                .location(ParkingLocation.fromPojo(parkingDTO.getLocation()))
                 .build();
     }
 

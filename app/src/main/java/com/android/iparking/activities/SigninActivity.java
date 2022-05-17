@@ -16,7 +16,7 @@ import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.User;
-import com.android.iparking.pojo.UserPojo;
+import com.android.iparking.dtos.UserDTO;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
@@ -61,10 +61,10 @@ public class SigninActivity extends AppCompatActivity
     }
 
     private void signin(User user) {
-        Call<UserPojo> call_async = apiService.signin(user);
-        call_async.enqueue(new Callback<UserPojo>() {
+        Call<UserDTO> call_async = apiService.signin(user);
+        call_async.enqueue(new Callback<UserDTO>() {
             @Override
-            public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
+            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
                     completeSignin(response.body());
                 } else {
@@ -73,7 +73,7 @@ public class SigninActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<UserPojo> call, Throwable t) {
+            public void onFailure(Call<UserDTO> call, Throwable t) {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         getString(R.string.connection_failure),
@@ -83,8 +83,8 @@ public class SigninActivity extends AppCompatActivity
         });
     }
 
-    private void completeSignin(UserPojo userPojo) {
-        this.user = User.fromPojo(userPojo);
+    private void completeSignin(UserDTO userDTO) {
+        this.user = User.fromDTO(userDTO);
         if (ContextCompat
                 .checkSelfPermission(SigninActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

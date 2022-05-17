@@ -1,6 +1,6 @@
 package com.android.iparking.models;
 
-import com.android.iparking.pojo.VehiclePojo;
+import com.android.iparking.dtos.VehicleDTO;
 
 public class Vehicle {
 
@@ -41,12 +41,12 @@ public class Vehicle {
         this.userEmail = userEmail;
     }
 
-    public static Vehicle fromPojo(VehiclePojo vehiclePojo) {
+    public static Vehicle fromDTO(VehicleDTO vehicleDTO) {
         return new VehicleBuilder()
-                .id(vehiclePojo.getId())
-                .nickname(vehiclePojo.getNickname())
-                .licensePlate(vehiclePojo.getLicensePlate())
-                .userEmail(vehiclePojo.getUser())
+                .id(vehicleDTO.getId())
+                .nickname(vehicleDTO.getNickname())
+                .licensePlate(vehicleDTO.getLicensePlate())
+                .userEmail(vehicleDTO.getUser())
                 .build();
     }
 

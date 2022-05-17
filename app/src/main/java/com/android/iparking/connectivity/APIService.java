@@ -1,11 +1,9 @@
 package com.android.iparking.connectivity;
 
 import com.android.iparking.models.User;
-import com.android.iparking.pojo.ParkingPojo;
-import com.android.iparking.pojo.UserPojo;
-import com.android.iparking.pojo.VehiclePojo;
-
-import java.util.List;
+import com.android.iparking.dtos.ParkingDTO;
+import com.android.iparking.dtos.UserDTO;
+import com.android.iparking.dtos.VehicleDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -17,14 +15,14 @@ import retrofit2.http.Query;
 public interface APIService {
 
     @GET("/user/login")
-    Call<UserPojo> login(@Query("email") String email, @Query("password") String password);
+    Call<UserDTO> login(@Query("email") String email, @Query("password") String password);
 
     @GET("/parking/all")
-    Call<ParkingPojo[][]> findAll();
+    Call<ParkingDTO[][]> findAll();
 
     @POST("/user/signin")
-    Call<UserPojo> signin(@Body User user);
+    Call<UserDTO> signin(@Body User user);
 
     @GET("/vehicle/get/{email}")
-    Call<VehiclePojo[][]> findAllVehiclesByUser(@Path("email") String email);
+    Call<VehicleDTO[][]> findAllVehiclesByUser(@Path("email") String email);
 }

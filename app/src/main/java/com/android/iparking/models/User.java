@@ -1,6 +1,6 @@
 package com.android.iparking.models;
 
-import com.android.iparking.pojo.UserPojo;
+import com.android.iparking.dtos.UserDTO;
 
 import java.io.Serializable;
 
@@ -43,11 +43,11 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public static User fromPojo(UserPojo userPojo) {
+    public static User fromDTO(UserDTO userDTO) {
         return new UserBuilder()
-                .id(userPojo.getId())
-                .email(userPojo.getEmail())
-                .name(userPojo.getName())
+                .id(userDTO.getId())
+                .email(userDTO.getEmail())
+                .name(userDTO.getName())
                 .build();
     }
 
