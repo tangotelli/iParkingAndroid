@@ -52,6 +52,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap map;
     private Location deviceLocation;
     private User user;
+    private Parking selectedParking;
     private APIService apiService;
     private List<Parking> parkings;
     private List<Marker> markers;
@@ -119,13 +120,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void showParkingDetail(Parking parking) {
+        this.selectedParking = parking;
         ((TextView) findViewById(R.id.bottomSheetName)).setText(parking.getName());
         ((TextView) findViewById(R.id.bottomSheetAddress)).setText(parking.getAddress());
         ((TextView) findViewById(R.id.bottomSheetBookingFare))
                 .setText(String.format("%s euros", parking.getBookingFare()));
         ((TextView) findViewById(R.id.bottomSheetStayFare))
                 .setText(String.format("%s euros/minute", parking.getStayFare()));
-        this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 
     private void findClosestParkings() {
@@ -208,6 +210,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void createIntent(Class<?> cls) {
         Intent intent = new Intent(MapActivity.this, cls);
         intent.putExtra("user", this.user);
+        intent.putExtra("parking", this.selectedParking);
         startActivity(intent);
     }
 }

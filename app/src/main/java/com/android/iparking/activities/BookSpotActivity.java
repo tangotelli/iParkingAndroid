@@ -21,8 +21,13 @@ import com.android.iparking.models.Vehicle;
 import com.android.iparking.pojo.VehiclePojo;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -33,6 +38,7 @@ import retrofit2.Response;
 public class BookSpotActivity extends AppCompatActivity {
     
     private User user;
+    private Parking parking;
     private APIService apiService;
     private String selectedVehicle;
     
@@ -40,9 +46,18 @@ public class BookSpotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_book_spot);
+        ((TextView) findViewById(R.id.tvDate)).setText(this.getCurrentDate());
         this.user = (User) getIntent().getSerializableExtra("user");
+        this.parking = (Parking) getIntent().getSerializableExtra(("parking"));
+        ((TextView) findViewById(R.id.tvParking)).setText(this.parking.getName());
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.findUserVehicles();
+    }
+
+    private String getCurrentDate() {
+        DateFormat dateFormat =
+                new SimpleDateFormat("dd/MM/yyyy - hh:mm", new Locale("es", "ES"));
+        return dateFormat.format(Calendar.getInstance().getTime());
     }
 
     private void findUserVehicles() {

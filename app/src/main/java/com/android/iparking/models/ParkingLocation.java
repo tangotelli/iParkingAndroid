@@ -3,7 +3,9 @@ package com.android.iparking.models;
 import com.android.iparking.pojo.LocationPojo;
 import com.google.android.gms.maps.model.LatLng;
 
-public class ParkingLocation {
+import java.io.Serializable;
+
+public class ParkingLocation implements Serializable {
 
     private Double latitude;
     private Double longitude;

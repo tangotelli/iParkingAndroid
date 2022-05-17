@@ -2,7 +2,9 @@ package com.android.iparking.models;
 
 import com.android.iparking.pojo.ParkingPojo;
 
-public class Parking {
+import java.io.Serializable;
+
+public class Parking implements Serializable {
 
     private String id;
     private String name;

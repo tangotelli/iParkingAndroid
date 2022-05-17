@@ -12,6 +12,7 @@
     <!-- Margins decided by the developers. -->
     <dimen name="component_margin">50dp</dimen>
     <dimen name="form_margin">20dp</dimen>
+    <dimen name="form_margin_inlayout">10dp</dimen>
     <dimen name="button_padding">8dp</dimen>
     <dimen name="button_margin">10dp</dimen>
     <dimen name="card_view_margin">5dp</dimen>

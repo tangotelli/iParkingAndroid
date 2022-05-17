@@ -20,7 +20,7 @@
     <LinearLayout
         android:id="@+id/layoutParking"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_below="@+id/tvBooking"
@@ -32,7 +32,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="@dimen/form_margin"
+            android:layout_marginTop="@dimen/form_margin_inlayout"
             android:text="@string/parking"
             android:textSize="@dimen/label_text_size" />
 
@@ -41,7 +41,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="@dimen/form_margin"
+            android:layout_marginTop="@dimen/form_margin_inlayout"
             android:textSize="@dimen/label_text_size" />
 
     </LinearLayout>
@@ -49,7 +49,7 @@
     <LinearLayout
         android:id="@+id/layoutDate"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:orientation="horizontal"
         android:gravity="center"
         android:layout_below="@+id/layoutParking"
@@ -57,20 +57,11 @@
         android:layout_marginHorizontal="@dimen/component_margin">
 
         <TextView
-            android:id="@+id/labelDate"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="@dimen/form_margin"
-            android:text="@string/date"
-            android:textSize="@dimen/label_text_size" />
-
-        <TextView
             android:id="@+id/tvDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:layout_marginTop="@dimen/form_margin"
+            android:layout_marginTop="@dimen/form_margin_inlayout"
             android:textSize="@dimen/label_text_size" />
 
     </LinearLayout>

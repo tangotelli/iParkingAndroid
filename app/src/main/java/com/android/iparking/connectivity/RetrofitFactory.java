@@ -5,7 +5,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitFactory {
 
-    private static final String API_BASE_URL = "https://192.168.1.36:8000";
+    private static final String API_BASE_URL = "https://192.168.1.39:8000";
 
     public static APIService setUpRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
