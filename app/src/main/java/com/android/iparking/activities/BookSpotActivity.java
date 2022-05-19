@@ -154,6 +154,11 @@ public class BookSpotActivity extends AppCompatActivity {
                         bookingForm.setEmail(this.user.getEmail());
                         bookingForm.setParkingId(this.parking.getId());
                         bookingForm.setVehicle(this.selectedVehicle);*/
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                "Pago completado",
+                                Snackbar.LENGTH_LONG
+                        ).show();
                     } else if (result.getResultCode() == PayActivity.PAYMENT_FAILED) {
                         Snackbar.make(
                                 findViewById(android.R.id.content),
@@ -171,7 +176,15 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     public void confirm(View view) {
-        this.activityResultLauncher
-                .launch(new Intent(BookSpotActivity.this, PayActivity.class));
+        if (this.selectedVehicle != null) {
+            this.activityResultLauncher
+                    .launch(new Intent(BookSpotActivity.this, PayActivity.class));
+        } else {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    "Seleccione un vehículo",
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
     }
 }

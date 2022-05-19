@@ -1,5 +1,6 @@
 package com.android.iparking.connectivity;
 
+import com.android.iparking.dtos.CardDTO;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.ParkingDTO;
 import com.android.iparking.dtos.UserDTO;
@@ -25,4 +26,7 @@ public interface APIService {
 
     @GET("/vehicle/get/{email}")
     Call<VehicleDTO[][]> findAllVehiclesByUser(@Path("email") String email);
+
+    @POST("/payment/pay")
+    Call<Void> pay(@Body CardDTO cardDTO);
 }
