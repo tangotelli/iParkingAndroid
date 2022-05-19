@@ -25,6 +25,8 @@
     <string name="route_button">Ruta</string>
     <string name="book_button">Reserva</string>
     <string name="stay_button">Estancia</string>
+    <string name="booking_fare">Reservas: %d euros</string>
+    <string name="stay_fare">Estancias: %d euros/minuto</string>
     <!-- Book Spot Activity -->
     <string name="book_spot">Reserva una plaza</string>
     <string name="parking">Parking</string>
@@ -32,16 +34,21 @@
     <string name="choose_vehicle">Elija un vehículo</string>
     <string name="register_vehicle">Registrar un vehículo</string>
     <string name="checkout">Confirmar y pagar</string>
+    <string name="booking_complete">Reserva completada con éxito</string>
     <!-- Pay Activity -->
     <string name="pay">Pagar</string>
     <string name="hint_card">Nº Tarjeta</string>
     <string name="hint_cvc">CVC</string>
     <string name="hint_expiring_month">Mes Expiración</string>
     <string name="hint_expiring_year">Año Expiración</string>
+    <string name="pay_completed">Pago completado</string>
+    <string name="pay_failed">Pago fallido. Inténtelo de nuevo</string>
+    <string name="pay_canceled">Pago cancelado</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>
     <string name="signin_failure">El email introducido pertenece a otra cuenta existente.</string>
+    <string name="missing_fields">Rellene todos los campos del formulario</string>
     <!-- Permisos -->
     <string name="permission_accepted">Permisos aprobados</string>
     <string name="permission_denied">Permisos denegados</string>

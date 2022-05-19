@@ -50,7 +50,6 @@ public class BookSpotActivity extends AppCompatActivity {
     private String selectedVehicle;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -152,20 +151,20 @@ public class BookSpotActivity extends AppCompatActivity {
                     if (result.getResultCode() == PayActivity.PAYMENT_COMPLETED) {
                         Snackbar.make(
                                 findViewById(android.R.id.content),
-                                "Pago completado",
+                                getString(R.string.pay_completed),
                                 Snackbar.LENGTH_LONG
                         ).show();
                         this.bookSpot();
                     } else if (result.getResultCode() == PayActivity.PAYMENT_FAILED) {
                         Snackbar.make(
                                 findViewById(android.R.id.content),
-                                "Pago fallido",
+                                getString(R.string.pay_failed),
                                 Snackbar.LENGTH_LONG
                         ).show();
                     } else {
                         Snackbar.make(
                                 findViewById(android.R.id.content),
-                                "Pago cancelado",
+                                getString(R.string.pay_canceled),
                                 Snackbar.LENGTH_LONG
                         ).show();
                     }
@@ -181,7 +180,7 @@ public class BookSpotActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Snackbar.make(
                             findViewById(android.R.id.content),
-                            "Reserva completada con éxito",
+                            getString(R.string.booking_complete),
                             Snackbar.LENGTH_LONG
                     ).show();
                 }
@@ -214,7 +213,7 @@ public class BookSpotActivity extends AppCompatActivity {
         } else {
             Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Seleccione un vehículo",
+                    getString(R.string.choose_vehicle),
                     Snackbar.LENGTH_LONG
             ).show();
         }

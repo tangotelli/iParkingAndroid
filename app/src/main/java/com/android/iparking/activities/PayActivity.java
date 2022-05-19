@@ -40,7 +40,7 @@ public class PayActivity extends AppCompatActivity {
         } else {
             Snackbar.make(
                     findViewById(android.R.id.content),
-                    "Rellene todos los campos del formulario",
+                    getString(R.string.missing_fields),
                     Snackbar.LENGTH_LONG
             ).show();
         }
@@ -72,8 +72,7 @@ public class PayActivity extends AppCompatActivity {
     }
 
     private boolean isFormFilled() {
-        return (((EditText) findViewById(R.
-                id.etCard)).getText().toString().trim().length() != 0)
+        return (((EditText) findViewById(R.id.etCard)).getText().toString().trim().length() != 0)
                 && (((EditText) findViewById(R.id.etExpiringMonth))
                     .getText().toString().trim().length() != 0)
                 && (((EditText) findViewById(R.id.etExpiringYear))

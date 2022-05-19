@@ -124,9 +124,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         ((TextView) findViewById(R.id.bottomSheetName)).setText(parking.getName());
         ((TextView) findViewById(R.id.bottomSheetAddress)).setText(parking.getAddress());
         ((TextView) findViewById(R.id.bottomSheetBookingFare))
-                .setText(String.format("%s euros", parking.getBookingFare()));
+                .setText(String.format(getString(R.string.booking_fare), parking.getBookingFare()));
         ((TextView) findViewById(R.id.bottomSheetStayFare))
-                .setText(String.format("%s euros/minute", parking.getStayFare()));
+                .setText(String.format(getString(R.string.stay_fare), parking.getStayFare()));
         this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
     }
 

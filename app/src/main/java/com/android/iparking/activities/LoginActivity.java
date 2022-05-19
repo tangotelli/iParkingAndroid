@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
+import com.android.iparking.dtos.CardDTO;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.UserDTO;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,9 +40,23 @@ public class LoginActivity extends AppCompatActivity
     }
 
     public void login(View view) {
-        String email = ((EditText) findViewById(R.id.etEmail)).getText().toString();
-        String password = ((EditText) findViewById(R.id.etPassword)).getText().toString();
-        this.login(email, password);
+        if (this.isFormFilled()) {
+            String email = ((EditText) findViewById(R.id.etEmail)).getText().toString();
+            String password = ((EditText) findViewById(R.id.etPassword)).getText().toString();
+            this.login(email, password);
+        } else {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.missing_fields),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    private boolean isFormFilled() {
+        return (((EditText) findViewById(R.id.etEmail)).getText().toString().trim().length() != 0)
+                && (((EditText) findViewById(R.id.etPassword))
+                .getText().toString().trim().length() != 0);
     }
 
     private void login(String email, String password) {

@@ -39,10 +39,33 @@ public class SigninActivity extends AppCompatActivity
     }
 
     public void signin(View view) {
+        if (this.isFormFilled()) {
+            this.signin();
+        } else {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.missing_fields),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    private boolean isFormFilled() {
+        return (((EditText) findViewById(R.id.etEmail)).getText().toString().trim().length() != 0)
+                && (((EditText) findViewById(R.id.etName))
+                .getText().toString().trim().length() != 0)
+                && (((EditText) findViewById(R.id.etPassword))
+                .getText().toString().trim().length() != 0)
+                && (((EditText) findViewById(R.id.etRepeatPassword))
+                .getText().toString().trim().length() != 0);
+    }
+
+    private void signin() {
         String email = ((EditText) findViewById(R.id.etEmail)).getText().toString();
         String name = ((EditText) findViewById(R.id.etName)).getText().toString();
         String password = ((EditText) findViewById(R.id.etPassword)).getText().toString();
-        String repeatedPassword = ((EditText) findViewById(R.id.etRepeatPassword)).getText().toString();
+        String repeatedPassword = ((EditText) findViewById(R.id.etRepeatPassword))
+                .getText().toString();
         if (password.equals(repeatedPassword)) {
             User user = new User.UserBuilder()
                     .id("")
