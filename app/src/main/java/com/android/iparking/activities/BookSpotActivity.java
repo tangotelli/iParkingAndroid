@@ -22,6 +22,7 @@ import android.widget.TextView;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
+import com.android.iparking.dtos.BookingDTO;
 import com.android.iparking.dtos.BookingFormDTO;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.User;
@@ -70,7 +71,7 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     private void findUserVehicles() {
-        Call<VehicleDTO[][]> call_async = apiService.findAllVehiclesByUser(this.user.getEmail());
+        Call<VehicleDTO[][]> call_async = this.apiService.findAllVehiclesByUser(this.user.getEmail());
         call_async.enqueue(new Callback<VehicleDTO[][]>() {
             @Override
             public void onResponse(Call<VehicleDTO[][]> call, Response<VehicleDTO[][]> response) {
@@ -149,16 +150,12 @@ public class BookSpotActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == PayActivity.PAYMENT_COMPLETED) {
-                        //TO-DO make booking via controller
-                        /*BookingFormDTO bookingForm = new BookingFormDTO();
-                        bookingForm.setEmail(this.user.getEmail());
-                        bookingForm.setParkingId(this.parking.getId());
-                        bookingForm.setVehicle(this.selectedVehicle);*/
                         Snackbar.make(
                                 findViewById(android.R.id.content),
                                 "Pago completado",
                                 Snackbar.LENGTH_LONG
                         ).show();
+                        this.bookSpot();
                     } else if (result.getResultCode() == PayActivity.PAYMENT_FAILED) {
                         Snackbar.make(
                                 findViewById(android.R.id.content),
@@ -173,6 +170,41 @@ public class BookSpotActivity extends AppCompatActivity {
                         ).show();
                     }
                 });
+    }
+
+    private void bookSpot() {
+        BookingFormDTO bookingFormDto = this.getBookingForm();
+        Call<BookingDTO> call_async = this.apiService.bookSpot(bookingFormDto);
+        call_async.enqueue(new Callback<BookingDTO>() {
+            @Override
+            public void onResponse(Call<BookingDTO> call, Response<BookingDTO> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(
+                            findViewById(android.R.id.content),
+                            "Reserva completada con éxito",
+                            Snackbar.LENGTH_LONG
+                    ).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BookingDTO> call, Throwable t) {
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        //getString(R.string.connection_failure),
+                        "ERROR " + t.getMessage(),
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+        });
+    }
+
+    private BookingFormDTO getBookingForm() {
+        BookingFormDTO bookingFormDto = new BookingFormDTO();
+        bookingFormDto.setEmail(this.user.getEmail());
+        bookingFormDto.setParkingId(this.parking.getId());
+        bookingFormDto.setVehicle(this.selectedVehicle);
+        return bookingFormDto;
     }
 
     public void confirm(View view) {

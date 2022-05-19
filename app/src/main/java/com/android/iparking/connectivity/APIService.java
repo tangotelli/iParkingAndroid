@@ -1,5 +1,7 @@
 package com.android.iparking.connectivity;
 
+import com.android.iparking.dtos.BookingDTO;
+import com.android.iparking.dtos.BookingFormDTO;
 import com.android.iparking.dtos.CardDTO;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.ParkingDTO;
@@ -29,4 +31,7 @@ public interface APIService {
 
     @POST("/payment/pay")
     Call<Void> pay(@Body CardDTO cardDTO);
+
+    @POST("/booking/new")
+    Call<BookingDTO> bookSpot(@Body BookingFormDTO bookingFormDTO);
 }
