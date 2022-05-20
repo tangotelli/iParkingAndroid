@@ -89,7 +89,8 @@
             android:layout_weight="1"
             android:padding="@dimen/button_padding"
             android:layout_margin="@dimen/button_margin"
-            android:text="@string/register_vehicle"/>
+            android:text="@string/register_vehicle"
+            android:onClick="registerVehicle"/>
 
         <Button
             android:id="@+id/buttonLogin"

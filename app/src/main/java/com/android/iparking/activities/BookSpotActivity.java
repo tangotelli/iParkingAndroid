@@ -49,6 +49,7 @@ public class BookSpotActivity extends AppCompatActivity {
     private APIService apiService;
     private String selectedVehicle;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,8 +99,8 @@ public class BookSpotActivity extends AppCompatActivity {
                 .map(VehicleDTO::getNickname)
                 .collect(Collectors.toList());
         vehicles.add(0, getString(R.string.choose_vehicle));
-        ArrayAdapter<String> adapter = this.createAdapter(vehicles);
-        spinner.setAdapter(adapter);
+        this.adapter = this.createAdapter(vehicles);
+        spinner.setAdapter(this.adapter);
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
@@ -148,25 +149,38 @@ public class BookSpotActivity extends AppCompatActivity {
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    if (result.getResultCode() == PayActivity.PAYMENT_COMPLETED) {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.pay_completed),
-                                Snackbar.LENGTH_LONG
-                        ).show();
-                        this.bookSpot();
-                    } else if (result.getResultCode() == PayActivity.PAYMENT_FAILED) {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.pay_failed),
-                                Snackbar.LENGTH_LONG
-                        ).show();
-                    } else {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.pay_canceled),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                    switch (result.getResultCode()) {
+                        case PayActivity.PAYMENT_COMPLETED:
+                            Snackbar.make(
+                                    findViewById(android.R.id.content),
+                                    getString(R.string.pay_completed),
+                                    Snackbar.LENGTH_LONG
+                            ).show();
+                            this.bookSpot();
+                            break;
+                        case PayActivity.PAYMENT_FAILED:
+                            Snackbar.make(
+                                    findViewById(android.R.id.content),
+                                    getString(R.string.pay_failed),
+                                    Snackbar.LENGTH_LONG
+                            ).show();
+                            break;
+                        case RegisterVehicleActivity.VEHICLE_REGISTERED:
+                            Snackbar.make(
+                                    findViewById(android.R.id.content),
+                                    getString(R.string.registered_vehicle),
+                                    Snackbar.LENGTH_LONG
+                            ).show();
+                            this.adapter.clear();
+                            ((Spinner) findViewById(R.id.spinnerVehicle)).setAdapter(null);
+                            this.findUserVehicles();
+                            break;
+                        default:
+                            Snackbar.make(
+                                    findViewById(android.R.id.content),
+                                    getString(R.string.canceled),
+                                    Snackbar.LENGTH_LONG
+                            ).show();
                     }
                 });
     }
@@ -217,5 +231,11 @@ public class BookSpotActivity extends AppCompatActivity {
                     Snackbar.LENGTH_LONG
             ).show();
         }
+    }
+
+    public void registerVehicle(View view) {
+        Intent intent = new Intent(BookSpotActivity.this, RegisterVehicleActivity.class);
+        intent.putExtra("user", this.user);
+        this.activityResultLauncher.launch(intent);
     }
 }

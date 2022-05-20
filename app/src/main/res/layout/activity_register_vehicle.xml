@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.RegisterVehicleActivity">
+
+    <EditText
+        android:id="@+id/etNickname"
+        android:layout_width="@dimen/field_width_standard"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/component_margin"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_nickname"
+        android:inputType="text"/>
+
+    <EditText
+        android:id="@+id/etLicensePlate"
+        android:layout_width="@dimen/field_width_standard"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etNickname"
+        android:layout_marginTop="@dimen/form_margin"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_license_plate"
+        android:inputType="text"/>
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/etLicensePlate"
+        android:padding="@dimen/button_padding"
+        android:layout_margin="@dimen/form_margin"
+        android:text="@string/register"
+        android:onClick="register"/>
+
+</RelativeLayout>
