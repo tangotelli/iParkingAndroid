@@ -46,7 +46,8 @@
             android:padding="@dimen/button_padding"
             android:layout_margin="@dimen/button_margin"
             android:text="@string/stay_button"
-            android:layout_weight="1" />
+            android:layout_weight="1"
+            android:onClick="beginStay"/>
     </LinearLayout>
 
     <TextView

@@ -207,6 +207,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.createIntent(BookSpotActivity.class);
     }
 
+    public void beginStay(View view) {
+        this.createIntent(BeginStayActivity.class);
+    }
+
     private void createIntent(Class<?> cls) {
         Intent intent = new Intent(MapActivity.this, cls);
         intent.putExtra("user", this.user);

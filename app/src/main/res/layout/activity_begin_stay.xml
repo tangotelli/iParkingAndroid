@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.BookSpotActivity">
+    tools:context=".activities.BeginStayActivity">
 
     <TextView
-        android:id="@+id/tvBooking"
+        android:id="@+id/tvStay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/component_margin"
@@ -18,17 +18,17 @@
         android:text="@string/book_spot"/>
 
     <LinearLayout
-        android:id="@+id/layoutBookingParking"
+        android:id="@+id/layoutStayParking"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_below="@+id/tvBooking"
+        android:layout_below="@+id/tvStay"
         android:layout_marginTop="@dimen/form_margin"
         android:layout_marginHorizontal="@dimen/component_margin">
 
         <TextView
-            android:id="@+id/labelBookingParking"
+            android:id="@+id/labelStayParking"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -37,7 +37,7 @@
             android:textSize="@dimen/label_text_size" />
 
         <TextView
-            android:id="@+id/tvBookingParking"
+            android:id="@+id/tvStayParking"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -47,17 +47,17 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/layoutBookingDate"
+        android:id="@+id/layoutStayDate"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:orientation="horizontal"
         android:gravity="center"
-        android:layout_below="@+id/layoutBookingParking"
+        android:layout_below="@+id/layoutStayParking"
         android:layout_marginTop="@dimen/form_margin"
         android:layout_marginHorizontal="@dimen/component_margin">
 
         <TextView
-            android:id="@+id/tvBookingDate"
+            android:id="@+id/tvStayDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -67,23 +67,23 @@
     </LinearLayout>
 
     <Spinner
-        android:id="@+id/spinnerBookingVehicle"
+        android:id="@+id/spinnerStayVehicle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/form_margin"
-        android:layout_below="@+id/layoutBookingDate"/>
+        android:layout_below="@+id/layoutStayDate"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
-        android:layout_below="@id/spinnerBookingVehicle"
+        android:layout_below="@id/spinnerStayVehicle"
         android:layout_marginTop="@dimen/form_margin"
         android:layout_marginHorizontal="@dimen/component_margin">
 
         <Button
-            android:id="@+id/buttonBookingRegisterVehicle"
+            android:id="@+id/buttonStayRegisterVehicle"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"
@@ -93,7 +93,7 @@
             android:onClick="registerVehicle"/>
 
         <Button
-            android:id="@+id/buttonBookingConfirm"
+            android:id="@+id/buttonStayConfirm"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:layout_weight="1"

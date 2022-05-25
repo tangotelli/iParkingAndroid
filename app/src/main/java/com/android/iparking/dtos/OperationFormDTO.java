@@ -5,7 +5,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 @Generated("jsonschema2pojo")
-public class BookingFormDTO {
+public class OperationFormDTO {
 
     @SerializedName("email")
     @Expose

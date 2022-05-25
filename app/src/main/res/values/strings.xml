@@ -39,6 +39,9 @@
     <string name="no_empty_spots">No hay sitios libres en el parking seleccionado</string>
     <string name="wrong_data_provided">El vehículo indicado no existe en el sistema</string>
     <string name="existing_booking">Ya tienes una reserva activa en este parking</string>
+    <!-- Begin Stay Activity -->
+    <string name="stay_began">Estancia iniciada con éxito</string>
+    <string name="existing_stay">Ya tienes una estancia activa en este parking</string>
     <!-- Pay Activity -->
     <string name="pay">Pagar</string>
     <string name="hint_card">Nº Tarjeta</string>
