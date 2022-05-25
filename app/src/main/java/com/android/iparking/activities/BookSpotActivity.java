@@ -1,14 +1,10 @@
 package com.android.iparking.activities;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -197,6 +193,8 @@ public class BookSpotActivity extends AppCompatActivity {
                             getString(R.string.booking_complete),
                             Snackbar.LENGTH_LONG
                     ).show();
+                } else {
+                    processUnsuccesfulResponse(response.code());
                 }
             }
 
@@ -210,6 +208,32 @@ public class BookSpotActivity extends AppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    private void processUnsuccesfulResponse(int code) {
+        switch (code) {
+            case 403:
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.existing_booking),
+                        Snackbar.LENGTH_LONG
+                ).show();
+                break;
+            case 404:
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.wrong_data_provided),
+                        Snackbar.LENGTH_LONG
+                ).show();
+                break;
+            case 412:
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        getString(R.string.no_empty_spots),
+                        Snackbar.LENGTH_LONG
+                ).show();
+                break;
+        }
     }
 
     private BookingFormDTO getBookingForm() {

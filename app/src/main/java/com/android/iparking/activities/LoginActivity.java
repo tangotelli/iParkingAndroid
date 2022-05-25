@@ -15,7 +15,6 @@ import android.widget.EditText;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
-import com.android.iparking.dtos.CardDTO;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.UserDTO;
 import com.google.android.material.snackbar.Snackbar;
@@ -65,9 +64,9 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    completeLogin(response.body());
+                    processSuccesfulResponse(response.body());
                 } else {
-                    incompleteLogin(response.code());
+                    processUnsuccesfulResponse(response.code());
                 }
             }
 
@@ -82,7 +81,7 @@ public class LoginActivity extends AppCompatActivity
         });
     }
 
-    private void completeLogin(UserDTO userDTO) {
+    private void processSuccesfulResponse(UserDTO userDTO) {
         this.user = User.fromDTO(userDTO);
         if (ContextCompat
                 .checkSelfPermission(LoginActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -96,13 +95,14 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private void incompleteLogin(int code) {
-        //TO-DO Revisar el status code para ver cuál pudo ser el error
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                getString(R.string.auth_failure),
-                Snackbar.LENGTH_LONG
-        ).show();
+    private void processUnsuccesfulResponse(int code) {
+        if (code == 401) {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.auth_failure),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
     }
 
     @Override

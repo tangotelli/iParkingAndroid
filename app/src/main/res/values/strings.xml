@@ -36,6 +36,9 @@
     <string name="registered_vehicle">Vehículo registrado con éxito</string>
     <string name="checkout">Confirmar y pagar</string>
     <string name="booking_complete">Reserva completada con éxito</string>
+    <string name="no_empty_spots">No hay sitios libres en el parking seleccionado</string>
+    <string name="wrong_data_provided">El vehículo indicado no existe en el sistema</string>
+    <string name="existing_booking">Ya tienes una reserva activa en este parking</string>
     <!-- Pay Activity -->
     <string name="pay">Pagar</string>
     <string name="hint_card">Nº Tarjeta</string>

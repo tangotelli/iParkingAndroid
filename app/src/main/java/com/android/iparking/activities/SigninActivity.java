@@ -89,9 +89,9 @@ public class SigninActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {
-                    completeSignin(response.body());
+                    processSuccesfulResponse(response.body());
                 } else {
-                    incompleteSignin(response.code());
+                    processUnsuccesfulResponse(response.code());
                 }
             }
 
@@ -106,7 +106,7 @@ public class SigninActivity extends AppCompatActivity
         });
     }
 
-    private void completeSignin(UserDTO userDTO) {
+    private void processSuccesfulResponse(UserDTO userDTO) {
         this.user = User.fromDTO(userDTO);
         if (ContextCompat
                 .checkSelfPermission(SigninActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -120,13 +120,14 @@ public class SigninActivity extends AppCompatActivity
         }
     }
 
-    private void incompleteSignin(int code) {
-        //TO-DO Revisar el status code para ver cuál pudo ser el error
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                getString(R.string.signin_failure),
-                Snackbar.LENGTH_LONG
-        ).show();
+    private void processUnsuccesfulResponse(int code) {
+        if (code == 400) {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.signin_failure),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
     }
 
     @Override

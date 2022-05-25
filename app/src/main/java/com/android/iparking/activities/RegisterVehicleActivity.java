@@ -65,12 +65,7 @@ public class RegisterVehicleActivity extends AppCompatActivity {
                     setResult(VEHICLE_REGISTERED);
                     finish();
                 } else {
-                    //TO-DO Comprobar código de error para ver por qué
-                    Snackbar.make(
-                            findViewById(android.R.id.content),
-                            getString(R.string.register_failed),
-                            Snackbar.LENGTH_LONG
-                    ).show();
+                    processUnsuccesfulResponse(response.code());
                 }
             }
 
@@ -84,5 +79,15 @@ public class RegisterVehicleActivity extends AppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    private void processUnsuccesfulResponse(int code) {
+        if (code == 400) {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.register_failed),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
     }
 }
