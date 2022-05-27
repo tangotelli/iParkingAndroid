@@ -247,7 +247,7 @@ public class BookSpotActivity extends AppCompatActivity {
     public void confirm(View view) {
         if (this.selectedVehicle != null) {
             Intent intent = new Intent(BookSpotActivity.this, PayActivity.class);
-            intent.putExtra("bookingFare", this.parking.getBookingFare());
+            intent.putExtra("price", this.parking.getBookingFare());
             this.activityResultLauncher.launch(intent);
         } else {
             Snackbar.make(

@@ -29,9 +29,9 @@ public class PayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
         this.apiService = RetrofitFactory.setUpRetrofit();
-        ((TextView) findViewById(R.id.tvBookingPrice))
+        ((TextView) findViewById(R.id.tvPrice))
                 .setText(String.format(getString(R.string.price),
-                        getIntent().getDoubleExtra("bookingFare", 0.0) + ""));
+                        getIntent().getDoubleExtra("price", 0.0) + ""));
     }
 
     public void pay(View view) {
