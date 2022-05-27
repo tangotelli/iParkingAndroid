@@ -174,16 +174,7 @@ public class BeginStayActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(
-                            findViewById(android.R.id.content),
-                            getString(R.string.stay_began),
-                            Snackbar.LENGTH_LONG
-                    ).show();
-                    assert response.body() != null;
-                    Intent intent = new Intent()
-                            .putExtra("stay", Stay.activeStayFromDTO(response.body()));
-                    setResult(STAY_BEGUN, intent);
-                    finish();
+                    processSuccesfulResponse(response.body());
                 } else {
                     processUnsuccesfulResponse(response.code());
                 }
@@ -199,6 +190,17 @@ public class BeginStayActivity extends AppCompatActivity {
                 ).show();
             }
         });
+    }
+
+    private void processSuccesfulResponse(StayDTO stayDTO) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.stay_began),
+                Snackbar.LENGTH_LONG
+        ).show();
+        Intent intent = new Intent().putExtra("stay", Stay.activeStayFromDTO(stayDTO));
+        setResult(STAY_BEGUN, intent);
+        finish();
     }
 
     private void processUnsuccesfulResponse(int code) {

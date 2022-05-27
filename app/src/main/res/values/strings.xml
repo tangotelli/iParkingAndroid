@@ -44,6 +44,7 @@
     <string name="stay_began">Estancia iniciada con éxito</string>
     <string name="existing_stay">Ya tienes una estancia activa en este parking</string>
     <string name="confirm">Confirmar</string>
+    <string name="no_stay_found">No se encontró la estancia indicada</string>
     <!-- Stay Activity -->
     <string name="current_stay">Estancia actual</string>
     <string name="start_date">Inicio</string>
