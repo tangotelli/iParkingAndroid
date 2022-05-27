@@ -53,12 +53,21 @@
         android:hint="@string/hint_cvc"
         android:inputType="text"/>
 
+    <TextView
+        android:id="@+id/tvBookingPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etCVC"
+        android:layout_marginTop="@dimen/component_margin"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/title_text_size"/>
+
     <Button
         android:id="@+id/buttonPay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/etCVC"
+        android:layout_below="@id/tvBookingPrice"
         android:padding="@dimen/button_padding"
         android:layout_margin="@dimen/button_margin"
         android:text="@string/pay"

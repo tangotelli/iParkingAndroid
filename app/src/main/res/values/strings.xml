@@ -40,8 +40,17 @@
     <string name="wrong_data_provided">El vehículo indicado no existe en el sistema</string>
     <string name="existing_booking">Ya tienes una reserva activa en este parking</string>
     <!-- Begin Stay Activity -->
+    <string name="begin_stay">Inicia una estancia</string>
     <string name="stay_began">Estancia iniciada con éxito</string>
     <string name="existing_stay">Ya tienes una estancia activa en este parking</string>
+    <string name="confirm">Confirmar</string>
+    <!-- Stay Activity -->
+    <string name="current_stay">Estancia actual</string>
+    <string name="start_date">Inicio</string>
+    <string name="fare">Tarifa</string>
+    <string name="fare_long">%s euros/minuto</string>
+    <string name="vehicle">Vehículo</string>
+    <string name="end_stay">Finalizar estancia</string>
     <!-- Pay Activity -->
     <string name="pay">Pagar</string>
     <string name="hint_card">Nº Tarjeta</string>
@@ -50,6 +59,7 @@
     <string name="hint_expiring_year">Año Expiración</string>
     <string name="pay_completed">Pago completado</string>
     <string name="pay_failed">Pago fallido. Inténtelo de nuevo</string>
+    <string name="price">Precio: %s euros</string>
     <!-- Register Vehicle Activity -->
     <string name="register">Registrar</string>
     <string name="hint_nickname">Nombre</string>

@@ -2,7 +2,6 @@ package com.android.iparking.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -12,7 +11,6 @@ import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.dtos.CardDTO;
-import com.android.iparking.dtos.VehicleDTO;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
@@ -31,6 +29,9 @@ public class PayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pay);
         this.apiService = RetrofitFactory.setUpRetrofit();
+        ((TextView) findViewById(R.id.tvBookingPrice))
+                .setText(String.format(getString(R.string.price),
+                        getIntent().getDoubleExtra("bookingFare", 0.0) + ""));
     }
 
     public void pay(View view) {

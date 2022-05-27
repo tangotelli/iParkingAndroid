@@ -1,5 +1,7 @@
 package com.android.iparking.activities;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -14,12 +16,14 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.Parking;
+import com.android.iparking.models.Stay;
 import com.android.iparking.models.User;
 import com.android.iparking.dtos.ParkingDTO;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -57,6 +61,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private List<Parking> parkings;
     private List<Marker> markers;
     private BottomSheetBehavior bottomSheetBehavior;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     private static final float STREETS_ZOOM_LEVEL = 15;
 
@@ -73,6 +78,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.user = (User) getIntent().getSerializableExtra("user");
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.markers = new ArrayList<>();
+        this.registerActivityResultLauncher();
     }
 
     private void setUpBottomSheet() {
@@ -215,6 +221,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Intent intent = new Intent(MapActivity.this, cls);
         intent.putExtra("user", this.user);
         intent.putExtra("parking", this.selectedParking);
+        this.activityResultLauncher.launch(intent);
+    }
+
+    private void registerActivityResultLauncher() {
+        this.activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == BeginStayActivity.STAY_BEGUN) {
+                        assert result.getData() != null;
+                        this.showStay((Stay) result.getData().getSerializableExtra("stay"));
+                    }
+                });
+    }
+
+    private void showStay(Stay stay) {
+        Intent intent = new Intent(MapActivity.this, StayActivity.class);
+        //intent.putExtra("user", this.user);
+        intent.putExtra("stayFare", this.selectedParking.getStayFare());
+        intent.putExtra("stay", stay);
         startActivity(intent);
+        finish();
     }
 }

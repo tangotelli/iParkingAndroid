@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IParking">
         <activity
+            android:name=".activities.StayActivity"
+            android:exported="true" />
+        <activity
             android:name=".activities.BeginStayActivity"
             android:exported="true" />
         <activity

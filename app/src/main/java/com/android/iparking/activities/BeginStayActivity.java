@@ -18,11 +18,11 @@ import android.widget.TextView;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
-import com.android.iparking.dtos.BookingDTO;
 import com.android.iparking.dtos.OperationFormDTO;
 import com.android.iparking.dtos.StayDTO;
 import com.android.iparking.dtos.VehicleDTO;
 import com.android.iparking.models.Parking;
+import com.android.iparking.models.Stay;
 import com.android.iparking.models.User;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -47,6 +47,8 @@ public class BeginStayActivity extends AppCompatActivity {
     private String selectedVehicle;
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ArrayAdapter<String> adapter;
+
+    public static final int STAY_BEGUN = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,38 +148,21 @@ public class BeginStayActivity extends AppCompatActivity {
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    switch (result.getResultCode()) {
-                        case PayActivity.PAYMENT_COMPLETED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_completed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            this.beginStay();
-                            break;
-                        case PayActivity.PAYMENT_FAILED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_failed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            break;
-                        case RegisterVehicleActivity.VEHICLE_REGISTERED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.registered_vehicle),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            this.adapter.clear();
-                            ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
-                            this.findUserVehicles();
-                            break;
-                        default:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.canceled),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                    if (result.getResultCode() == RegisterVehicleActivity.VEHICLE_REGISTERED) {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.registered_vehicle),
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                        this.adapter.clear();
+                        ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
+                        this.findUserVehicles();
+                    } else {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.canceled),
+                                Snackbar.LENGTH_LONG
+                        ).show();
                     }
                 });
     }
@@ -194,6 +179,11 @@ public class BeginStayActivity extends AppCompatActivity {
                             getString(R.string.stay_began),
                             Snackbar.LENGTH_LONG
                     ).show();
+                    assert response.body() != null;
+                    Intent intent = new Intent()
+                            .putExtra("stay", Stay.activeStayFromDTO(response.body()));
+                    setResult(STAY_BEGUN, intent);
+                    finish();
                 } else {
                     processUnsuccesfulResponse(response.code());
                 }
@@ -240,8 +230,7 @@ public class BeginStayActivity extends AppCompatActivity {
 
     public void confirm(View view) {
         if (this.selectedVehicle != null) {
-            this.activityResultLauncher
-                    .launch(new Intent(BeginStayActivity.this, PayActivity.class));
+            this.beginStay();
         } else {
             Snackbar.make(
                     findViewById(android.R.id.content),

@@ -28,6 +28,12 @@ public class StayDTO {
     @SerializedName("Beginning")
     @Expose
     private String beginning;
+    @SerializedName("End")
+    @Expose
+    private String end;
+    @SerializedName("Price")
+    @Expose
+    private String price;
 
     public String getId() {
         return id;
@@ -83,6 +89,22 @@ public class StayDTO {
 
     public void setBeginning(String beginning) {
         this.beginning = beginning;
+    }
+
+    public String getEnd() {
+        return end;
+    }
+
+    public void setEnd(String end) {
+        this.end = end;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
     }
 
 }
