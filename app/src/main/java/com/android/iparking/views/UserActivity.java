@@ -1,9 +1,14 @@
 package com.android.iparking.views;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.iparking.R;
@@ -27,6 +32,7 @@ public class UserActivity extends AppCompatActivity {
 
     private User user;
     private APIService apiService;
+    private ActivityResultLauncher<Intent> activityResultLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class UserActivity extends AppCompatActivity {
         this.user = (User) getIntent().getSerializableExtra("user");
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.showInformation();
+        this.registerActivityResultLauncher();
     }
 
     private void showInformation() {
@@ -72,5 +79,32 @@ public class UserActivity extends AppCompatActivity {
                 .collect(Collectors.toList());
         ((ListView) findViewById(R.id.listVehicles)).setAdapter(
                 new VehicleListAdapter(vehicles, this.getResources(), this));
+    }
+
+    private void registerActivityResultLauncher() {
+        this.activityResultLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> {
+                    if (result.getResultCode() == RegisterVehicleActivity.VEHICLE_REGISTERED) {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.registered_vehicle),
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                        this.findUserVehicles();
+                    } else {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.canceled),
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                    }
+                });
+    }
+
+    public void registerVehicle(View view) {
+        Intent intent = new Intent(UserActivity.this, RegisterVehicleActivity.class);
+        intent.putExtra("user", this.user);
+        this.activityResultLauncher.launch(intent);
     }
 }
