@@ -72,6 +72,8 @@
     <string name="profile">Perfil</string>
     <string name="remove_vehicle">Eliminar</string>
     <string name="my_vehicles">Mis vehículos</string>
+    <string name="vehicle_not_found">El vehículo no pudo ser encontrado</string>
+    <string name="vehicle_removed">El vehículo fue eliminado con éxito</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>

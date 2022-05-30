@@ -10,23 +10,32 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.iparking.R;
+import com.android.iparking.connectivity.APIService;
+import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.models.Vehicle;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class VehicleListAdapter extends BaseAdapter {
 
-    private List<Vehicle> vehicles;
+    private final List<Vehicle> vehicles;
     protected Resources resources;
     protected Context context;
     private final LayoutInflater inflater;
     private int clickedCard;
+    private APIService apiService;
 
     public VehicleListAdapter(List<Vehicle> vehicles, Resources resources, Context context) {
         this.vehicles = vehicles;
         this.resources = resources;
         this.context = context;
         this.inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.apiService = RetrofitFactory.setUpRetrofit();
     }
 
     @Override
@@ -77,7 +86,23 @@ public class VehicleListAdapter extends BaseAdapter {
     }
 
     private void removeVehicle(View view) {
+        Call<Void> call_async = this.apiService
+                .deleteVehicle(this.vehicles.get(this.clickedCard).getId());
+        call_async.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    ((UserActivity) context).processSuccesfulResponse();
+                } else {
+                    ((UserActivity) context).processUnsuccesfulResponse(response.code());
+                }
+            }
 
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                ((UserActivity) context).processFailedResponse(t);
+            }
+        });
     }
 
     public static class VehicleCardHolder {

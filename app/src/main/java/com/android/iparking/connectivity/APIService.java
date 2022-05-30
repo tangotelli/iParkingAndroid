@@ -12,6 +12,7 @@ import com.android.iparking.dtos.VehicleDTO;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -49,4 +50,7 @@ public interface APIService {
 
     @PUT("/stay/resume/{id}")
     Call<StayDTO> resumeStay(@Path("id") String id);
+
+    @DELETE("/vehicle/delete/{id}")
+    Call<Void> deleteVehicle(@Path("id") String id);
 }

@@ -107,4 +107,32 @@ public class UserActivity extends AppCompatActivity {
         intent.putExtra("user", this.user);
         this.activityResultLauncher.launch(intent);
     }
+
+    public void processFailedResponse(Throwable t) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                //getString(R.string.connection_failure),
+                "ERROR " + t.getMessage(),
+                Snackbar.LENGTH_LONG
+        ).show();
+    }
+
+    public void processUnsuccesfulResponse(int code) {
+        if (code == 404) {
+            Snackbar.make(
+                    findViewById(android.R.id.content),
+                    getString(R.string.vehicle_not_found),
+                    Snackbar.LENGTH_LONG
+            ).show();
+        }
+    }
+
+    public void processSuccesfulResponse() {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.vehicle_removed),
+                Snackbar.LENGTH_LONG
+        ).show();
+        this.findUserVehicles();
+    }
 }
