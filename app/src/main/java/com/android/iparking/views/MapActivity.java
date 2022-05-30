@@ -1,4 +1,4 @@
-package com.android.iparking.activities;
+package com.android.iparking.views;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -16,7 +16,6 @@ import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.android.iparking.R;
@@ -242,5 +241,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         intent.putExtra("stay", stay);
         startActivity(intent);
         finish();
+    }
+
+    public void showProfile(View view) {
+        this.createIntent(UserActivity.class);
     }
 }

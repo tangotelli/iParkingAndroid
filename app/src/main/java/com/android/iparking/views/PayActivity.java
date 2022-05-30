@@ -1,4 +1,4 @@
-package com.android.iparking.activities;
+package com.android.iparking.views;
 
 import androidx.appcompat.app.AppCompatActivity;
 

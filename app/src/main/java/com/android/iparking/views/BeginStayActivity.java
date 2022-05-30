@@ -1,4 +1,4 @@
-package com.android.iparking.activities;
+package com.android.iparking.views;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -18,11 +18,12 @@ import android.widget.TextView;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
-import com.android.iparking.dtos.BookingDTO;
 import com.android.iparking.dtos.OperationFormDTO;
-import com.android.iparking.models.Parking;
-import com.android.iparking.models.User;
+import com.android.iparking.dtos.StayDTO;
 import com.android.iparking.dtos.VehicleDTO;
+import com.android.iparking.models.Parking;
+import com.android.iparking.models.Stay;
+import com.android.iparking.models.User;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.DateFormat;
@@ -38,8 +39,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class BookSpotActivity extends AppCompatActivity {
-    
+public class BeginStayActivity extends AppCompatActivity {
+
     private User user;
     private Parking parking;
     private APIService apiService;
@@ -47,14 +48,16 @@ public class BookSpotActivity extends AppCompatActivity {
     private ActivityResultLauncher<Intent> activityResultLauncher;
     private ArrayAdapter<String> adapter;
 
+    public static final int STAY_BEGUN = 50;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_spot);
-        ((TextView) findViewById(R.id.tvBookingDate)).setText(this.getCurrentDate());
+        setContentView(R.layout.activity_begin_stay);
+        ((TextView) findViewById(R.id.tvStayDate)).setText(this.getCurrentDate());
         this.user = (User) getIntent().getSerializableExtra("user");
         this.parking = (Parking) getIntent().getSerializableExtra(("parking"));
-        ((TextView) findViewById(R.id.tvBookingParking)).setText(this.parking.getName());
+        ((TextView) findViewById(R.id.tvStayParking)).setText(this.parking.getName());
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.findUserVehicles();
         this.registerActivityResultLauncher();
@@ -89,7 +92,7 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     private void setUpSpinner(VehicleDTO[][] body) {
-        Spinner spinner = findViewById(R.id.spinnerBookingVehicle);
+        Spinner spinner = findViewById(R.id.spinnerStayVehicle);
         List<String> vehicles = Arrays.stream(body)
                 .flatMap(Stream::of)
                 .map(VehicleDTO::getNickname)
@@ -145,61 +148,40 @@ public class BookSpotActivity extends AppCompatActivity {
         this.activityResultLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
-                    switch (result.getResultCode()) {
-                        case PayActivity.PAYMENT_COMPLETED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_completed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            this.bookSpot();
-                            break;
-                        case PayActivity.PAYMENT_FAILED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_failed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            break;
-                        case RegisterVehicleActivity.VEHICLE_REGISTERED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.registered_vehicle),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
-                            this.adapter.clear();
-                            ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
-                            this.findUserVehicles();
-                            break;
-                        default:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.canceled),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                    if (result.getResultCode() == RegisterVehicleActivity.VEHICLE_REGISTERED) {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.registered_vehicle),
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                        this.adapter.clear();
+                        ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
+                        this.findUserVehicles();
+                    } else {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                getString(R.string.canceled),
+                                Snackbar.LENGTH_LONG
+                        ).show();
                     }
                 });
     }
 
-    private void bookSpot() {
+    private void beginStay() {
         OperationFormDTO operationFormDto = this.getOperationForm();
-        Call<BookingDTO> call_async = this.apiService.bookSpot(operationFormDto);
-        call_async.enqueue(new Callback<BookingDTO>() {
+        Call<StayDTO> call_async = this.apiService.beginStay(operationFormDto);
+        call_async.enqueue(new Callback<StayDTO>() {
             @Override
-            public void onResponse(Call<BookingDTO> call, Response<BookingDTO> response) {
+            public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(
-                            findViewById(android.R.id.content),
-                            getString(R.string.booking_complete),
-                            Snackbar.LENGTH_LONG
-                    ).show();
+                    processSuccesfulResponse(response.body());
                 } else {
                     processUnsuccesfulResponse(response.code());
                 }
             }
 
             @Override
-            public void onFailure(Call<BookingDTO> call, Throwable t) {
+            public void onFailure(Call<StayDTO> call, Throwable t) {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         //getString(R.string.connection_failure),
@@ -210,12 +192,23 @@ public class BookSpotActivity extends AppCompatActivity {
         });
     }
 
+    private void processSuccesfulResponse(StayDTO stayDTO) {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.stay_began),
+                Snackbar.LENGTH_LONG
+        ).show();
+        Intent intent = new Intent().putExtra("stay", Stay.activeStayFromDTO(stayDTO));
+        setResult(STAY_BEGUN, intent);
+        finish();
+    }
+
     private void processUnsuccesfulResponse(int code) {
         switch (code) {
             case 403:
                 Snackbar.make(
                         findViewById(android.R.id.content),
-                        getString(R.string.existing_booking),
+                        getString(R.string.existing_stay),
                         Snackbar.LENGTH_LONG
                 ).show();
                 break;
@@ -223,13 +216,6 @@ public class BookSpotActivity extends AppCompatActivity {
                 Snackbar.make(
                         findViewById(android.R.id.content),
                         getString(R.string.wrong_data_provided),
-                        Snackbar.LENGTH_LONG
-                ).show();
-                break;
-            case 412:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.no_empty_spots),
                         Snackbar.LENGTH_LONG
                 ).show();
                 break;
@@ -246,9 +232,7 @@ public class BookSpotActivity extends AppCompatActivity {
 
     public void confirm(View view) {
         if (this.selectedVehicle != null) {
-            Intent intent = new Intent(BookSpotActivity.this, PayActivity.class);
-            intent.putExtra("price", this.parking.getBookingFare());
-            this.activityResultLauncher.launch(intent);
+            this.beginStay();
         } else {
             Snackbar.make(
                     findViewById(android.R.id.content),
@@ -259,7 +243,7 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     public void registerVehicle(View view) {
-        Intent intent = new Intent(BookSpotActivity.this, RegisterVehicleActivity.class);
+        Intent intent = new Intent(BeginStayActivity.this, RegisterVehicleActivity.class);
         intent.putExtra("user", this.user);
         this.activityResultLauncher.launch(intent);
     }

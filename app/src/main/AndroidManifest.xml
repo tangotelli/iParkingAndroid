@@ -14,28 +14,31 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IParking">
         <activity
-            android:name=".activities.StayActivity"
+            android:name=".views.UserActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.BeginStayActivity"
+            android:name=".views.StayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.RegisterVehicleActivity"
+            android:name=".views.BeginStayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.PayActivity"
+            android:name=".views.RegisterVehicleActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.BookSpotActivity"
+            android:name=".views.PayActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.SigninActivity"
+            android:name=".views.BookSpotActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.PermissionsActivity"
+            android:name=".views.SigninActivity"
             android:exported="true" />
         <activity
-            android:name=".activities.LoginActivity"
+            android:name=".views.PermissionsActivity"
+            android:exported="true" />
+        <activity
+            android:name=".views.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,7 +47,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.MapActivity"
+            android:name=".views.MapActivity"
             android:exported="true" />
 
         <meta-data

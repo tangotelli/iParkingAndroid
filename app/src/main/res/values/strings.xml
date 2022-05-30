@@ -68,6 +68,10 @@
     <string name="hint_nickname">Nombre</string>
     <string name="hint_license_plate">Matrícula</string>
     <string name="register_failed">El vehículo no pudo ser registrado</string>
+    <!-- User Activity -->
+    <string name="profile">Perfil</string>
+    <string name="remove_vehicle">Eliminar</string>
+    <string name="my_vehicles">Mis vehículos</string>
     <!-- Errores -->
     <string name="connection_failure">Error de conexión. Reinténtelo más tarde.</string>
     <string name="auth_failure">No se pudo iniciar sesión. Revise sus credenciales.</string>

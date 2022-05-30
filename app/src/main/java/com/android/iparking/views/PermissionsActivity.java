@@ -1,4 +1,4 @@
-package com.android.iparking.activities;
+package com.android.iparking.views;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
