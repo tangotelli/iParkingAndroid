@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.dtos.StayDTO;
 import com.android.iparking.models.Stay;
+import com.android.iparking.models.User;
 import com.google.android.material.snackbar.Snackbar;
 
 import retrofit2.Call;
@@ -23,7 +25,7 @@ import retrofit2.Response;
 public class StayActivity extends AppCompatActivity {
 
     private Stay activeStay;
-    private Stay finishedStay;
+    private User user;
     private double stayFare;
     private APIService apiService;
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -33,6 +35,7 @@ public class StayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stay);
         this.activeStay = (Stay) getIntent().getSerializableExtra("stay");
+        this.user = (User) getIntent().getSerializableExtra("user");
         this.stayFare = getIntent().getDoubleExtra("stayFare", 0.0);
         this.showInformation();
         this.apiService = RetrofitFactory.setUpRetrofit();
@@ -53,11 +56,7 @@ public class StayActivity extends AppCompatActivity {
                 result -> {
                     switch (result.getResultCode()) {
                         case PayActivity.PAYMENT_COMPLETED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_completed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            this.stayEndedOperations();
                             break;
                         case PayActivity.PAYMENT_FAILED:
                             Snackbar.make(
@@ -65,6 +64,7 @@ public class StayActivity extends AppCompatActivity {
                                     getString(R.string.pay_failed),
                                     Snackbar.LENGTH_LONG
                             ).show();
+                            this.resumeStay();
                             break;
                         default:
                             Snackbar.make(
@@ -72,8 +72,41 @@ public class StayActivity extends AppCompatActivity {
                                     getString(R.string.canceled),
                                     Snackbar.LENGTH_LONG
                             ).show();
+                            this.resumeStay();
                     }
                 });
+    }
+
+    private void stayEndedOperations() {
+        Snackbar.make(
+                findViewById(android.R.id.content),
+                getString(R.string.stay_ended),
+                Snackbar.LENGTH_LONG
+        ).show();
+        findViewById(R.id.buttonEndStay).setEnabled(false);
+        findViewById(R.id.buttonShowMap).setEnabled(true);
+    }
+
+    private void resumeStay() {
+        Call<StayDTO> call_async = this.apiService.resumeStay(this.activeStay.getId());
+        call_async.enqueue(new Callback<StayDTO>() {
+            @Override
+            public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
+                if (!response.isSuccessful()) {
+                    processUnsuccesfulResponse(response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StayDTO> call, Throwable t) {
+                Snackbar.make(
+                        findViewById(android.R.id.content),
+                        //getString(R.string.connection_failure),
+                        "ERROR " + t.getMessage(),
+                        Snackbar.LENGTH_LONG
+                ).show();
+            }
+        });
     }
 
     public void endStay(View view) {
@@ -101,10 +134,14 @@ public class StayActivity extends AppCompatActivity {
     }
 
     private void processSuccessfulResponse(StayDTO stayDTO) {
-        this.finishedStay = Stay.finishedStayFromDTO(stayDTO);
-        Intent intent = new Intent(StayActivity.this, PayActivity.class);
-        intent.putExtra("price", Double.valueOf(this.finishedStay.getPrice()));
-        this.activityResultLauncher.launch(intent);
+        if (!stayDTO.getPrice().equals("null")) {
+            Stay finishedStay = Stay.finishedStayFromDTO(stayDTO);
+            Intent intent = new Intent(StayActivity.this, PayActivity.class);
+            intent.putExtra("price", Double.valueOf(finishedStay.getPrice()));
+            this.activityResultLauncher.launch(intent);
+        } else {
+            this.stayEndedOperations();
+        }
     }
 
     private void processUnsuccesfulResponse(int code) {
@@ -115,5 +152,12 @@ public class StayActivity extends AppCompatActivity {
                     Snackbar.LENGTH_LONG
             ).show();
         }
+    }
+
+    public void showMap(View view) {
+        Intent intent = new Intent(StayActivity.this, MapActivity.class);
+        intent.putExtra("user", this.user);
+        startActivity(intent);
+        finish();
     }
 }

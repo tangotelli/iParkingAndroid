@@ -52,6 +52,8 @@
     <string name="fare_long">%s euros/minuto</string>
     <string name="vehicle">Vehículo</string>
     <string name="end_stay">Finalizar estancia</string>
+    <string name="stay_ended">Estancia finalizada con éxito</string>
+    <string name="show_map">Volver al mapa</string>
     <!-- Pay Activity -->
     <string name="pay">Pagar</string>
     <string name="hint_card">Nº Tarjeta</string>

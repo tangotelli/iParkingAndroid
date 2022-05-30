@@ -237,7 +237,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void showStay(Stay stay) {
         Intent intent = new Intent(MapActivity.this, StayActivity.class);
-        //intent.putExtra("user", this.user);
+        intent.putExtra("user", this.user);
         intent.putExtra("stayFare", this.selectedParking.getStayFare());
         intent.putExtra("stay", stay);
         startActivity(intent);

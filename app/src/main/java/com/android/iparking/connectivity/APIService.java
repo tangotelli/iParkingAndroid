@@ -46,4 +46,7 @@ public interface APIService {
 
     @PUT("/stay/end/{id}")
     Call<StayDTO> endStay(@Path("id") String id);
+
+    @PUT("/stay/resume/{id}")
+    Call<StayDTO> resumeStay(@Path("id") String id);
 }
