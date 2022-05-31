@@ -70,8 +70,8 @@ public class BeginStayActivity extends AppCompatActivity {
     }
 
     private void findUserVehicles() {
-        Call<VehicleDTO[][]> call_async = this.apiService.findAllVehiclesByUser(this.user.getEmail());
-        call_async.enqueue(new Callback<VehicleDTO[][]>() {
+        Call<VehicleDTO[][]> callAsync = this.apiService.findAllVehiclesByUser(this.user.getEmail());
+        callAsync.enqueue(new Callback<VehicleDTO[][]>() {
             @Override
             public void onResponse(Call<VehicleDTO[][]> call, Response<VehicleDTO[][]> response) {
                 if (response.isSuccessful()) {
@@ -114,7 +114,7 @@ public class BeginStayActivity extends AppCompatActivity {
 
     @NonNull
     private ArrayAdapter<String> createAdapter(List<String> vehicles) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, vehicles) {
             @Override
             public boolean isEnabled(int position) {
@@ -127,8 +127,8 @@ public class BeginStayActivity extends AppCompatActivity {
                 return spinnerHintColor(position, view);
             }
         };
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        return adapter;
+        arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        return arrayAdapter;
     }
 
     private View spinnerHintColor(int position, View view) {
@@ -159,8 +159,8 @@ public class BeginStayActivity extends AppCompatActivity {
 
     private void beginStay() {
         OperationFormDTO operationFormDto = this.getOperationForm();
-        Call<StayDTO> call_async = this.apiService.beginStay(operationFormDto);
-        call_async.enqueue(new Callback<StayDTO>() {
+        Call<StayDTO> callAsync = this.apiService.beginStay(operationFormDto);
+        callAsync.enqueue(new Callback<StayDTO>() {
             @Override
             public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
                 if (response.isSuccessful()) {
@@ -187,15 +187,12 @@ public class BeginStayActivity extends AppCompatActivity {
     }
 
     private void processUnsuccesfulResponse(int code) {
-        switch (code) {
-            case 403:
-                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
-                        getString(R.string.existing_stay));
-                break;
-            case 404:
-                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
-                        getString(R.string.wrong_data_provided));
-                break;
+        if (code == 403) {
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.existing_stay));
+        } else if (code == 404) {
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.wrong_data_provided));
         }
     }
 

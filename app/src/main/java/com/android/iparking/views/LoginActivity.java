@@ -56,8 +56,8 @@ public class LoginActivity extends AppCompatActivity
     }
 
     private void login(String email, String password) {
-        Call<UserDTO> call_async = apiService.login(email, password);
-        call_async.enqueue(new Callback<UserDTO>() {
+        Call<UserDTO> callAsync = apiService.login(email, password);
+        callAsync.enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {

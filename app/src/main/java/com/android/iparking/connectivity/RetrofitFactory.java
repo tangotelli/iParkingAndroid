@@ -7,6 +7,10 @@ public class RetrofitFactory {
 
     private static final String API_BASE_URL = "https://192.168.1.34:8000";
 
+    private RetrofitFactory() {
+        //empty for framework
+    }
+
     public static APIService setUpRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(API_BASE_URL)

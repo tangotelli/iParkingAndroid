@@ -64,13 +64,13 @@ public class SigninActivity extends AppCompatActivity
         String repeatedPassword = ((EditText) findViewById(R.id.etRepeatPassword))
                 .getText().toString();
         if (password.equals(repeatedPassword)) {
-            User user = new User.UserBuilder()
+            User newUser = new User.UserBuilder()
                     .id("")
                     .email(email)
                     .name(name)
                     .password(password)
                     .build();
-            this.signin(user);
+            this.signin(newUser);
         } else {
             SnackbarGenerator.snackbar(findViewById(android.R.id.content),
                     getString(R.string.passwords_do_not_match));
@@ -78,8 +78,8 @@ public class SigninActivity extends AppCompatActivity
     }
 
     private void signin(User user) {
-        Call<UserDTO> call_async = apiService.signin(user);
-        call_async.enqueue(new Callback<UserDTO>() {
+        Call<UserDTO> callAsync = apiService.signin(user);
+        callAsync.enqueue(new Callback<UserDTO>() {
             @Override
             public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
                 if (response.isSuccessful()) {

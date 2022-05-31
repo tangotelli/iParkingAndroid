@@ -6,6 +6,10 @@ import com.google.android.material.snackbar.Snackbar;
 
 public class SnackbarGenerator {
 
+    private SnackbarGenerator() {
+        //empty for framework
+    }
+
     public static void snackbar(View view, String message) {
         Snackbar.make(view, message, Snackbar.LENGTH_LONG).show();
     }

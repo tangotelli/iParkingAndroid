@@ -154,8 +154,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void findClosestParkings() {
-        Call<ParkingDTO[][]> call_async = apiService.findAll();
-        call_async.enqueue(new Callback<ParkingDTO[][]>() {
+        Call<ParkingDTO[][]> callAsync = apiService.findAll();
+        callAsync.enqueue(new Callback<ParkingDTO[][]>() {
             @Override
             public void onResponse(Call<ParkingDTO[][]> call, Response<ParkingDTO[][]> response) {
                 if (response.isSuccessful()) {

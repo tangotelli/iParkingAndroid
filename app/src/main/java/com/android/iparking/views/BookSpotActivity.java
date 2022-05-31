@@ -67,8 +67,8 @@ public class BookSpotActivity extends AppCompatActivity {
     }
 
     private void findUserVehicles() {
-        Call<VehicleDTO[][]> call_async = this.apiService.findAllVehiclesByUser(this.user.getEmail());
-        call_async.enqueue(new Callback<VehicleDTO[][]>() {
+        Call<VehicleDTO[][]> callAsync = this.apiService.findAllVehiclesByUser(this.user.getEmail());
+        callAsync.enqueue(new Callback<VehicleDTO[][]>() {
             @Override
             public void onResponse(Call<VehicleDTO[][]> call, Response<VehicleDTO[][]> response) {
                 if (response.isSuccessful()) {
@@ -111,7 +111,7 @@ public class BookSpotActivity extends AppCompatActivity {
 
     @NonNull
     private ArrayAdapter<String> createAdapter(List<String> vehicles) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
                 R.layout.support_simple_spinner_dropdown_item, vehicles) {
             @Override
             public boolean isEnabled(int position) {
@@ -124,8 +124,8 @@ public class BookSpotActivity extends AppCompatActivity {
                 return spinnerHintColor(position, view);
             }
         };
-        adapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
-        return adapter;
+        arrayAdapter.setDropDownViewResource(R.layout.support_simple_spinner_dropdown_item);
+        return arrayAdapter;
     }
 
     private View spinnerHintColor(int position, View view) {
@@ -167,8 +167,8 @@ public class BookSpotActivity extends AppCompatActivity {
 
     private void bookSpot() {
         OperationFormDTO operationFormDto = this.getOperationForm();
-        Call<BookingDTO> call_async = this.apiService.bookSpot(operationFormDto);
-        call_async.enqueue(new Callback<BookingDTO>() {
+        Call<BookingDTO> callAsync = this.apiService.bookSpot(operationFormDto);
+        callAsync.enqueue(new Callback<BookingDTO>() {
             @Override
             public void onResponse(Call<BookingDTO> call, Response<BookingDTO> response) {
                 if (response.isSuccessful()) {
@@ -201,6 +201,9 @@ public class BookSpotActivity extends AppCompatActivity {
                 SnackbarGenerator.snackbar(findViewById(android.R.id.content),
                         getString(R.string.no_empty_spots));
                 break;
+            default:
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
         }
     }
 

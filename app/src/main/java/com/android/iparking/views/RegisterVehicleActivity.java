@@ -57,8 +57,8 @@ public class RegisterVehicleActivity extends AppCompatActivity {
     }
 
     private void register(RegisterVehicleFormDTO registerVehicleFormDTO) {
-        Call<VehicleDTO> call_async = this.apiService.registerVehicle(registerVehicleFormDTO);
-        call_async.enqueue(new Callback<VehicleDTO>() {
+        Call<VehicleDTO> callAsync = this.apiService.registerVehicle(registerVehicleFormDTO);
+        callAsync.enqueue(new Callback<VehicleDTO>() {
             @Override
             public void onResponse(Call<VehicleDTO> call, Response<VehicleDTO> response) {
                 if (response.isSuccessful()) {

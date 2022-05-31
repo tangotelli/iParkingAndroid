@@ -13,16 +13,22 @@ import okhttp3.OkHttpClient;
 
 public class MyHttpClient {
 
+    private MyHttpClient() {
+        //empty for framework
+    }
+
     public static OkHttpClient getUnsafeOkHttpClient() {
         try {
             final TrustManager[] trustAllCerts = new TrustManager[] {
                     new X509TrustManager() {
                         @Override
                         public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                            //empty for framework
                         }
 
                         @Override
                         public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                            //empty for framework
                         }
 
                         @Override
@@ -42,8 +48,7 @@ public class MyHttpClient {
                     return true;
                 }
             });
-            OkHttpClient okHttpClient = builder.build();
-            return okHttpClient;
+            return builder.build();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

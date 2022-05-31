@@ -51,8 +51,8 @@ public class UserActivity extends AppCompatActivity {
     }
 
     private void findUserVehicles() {
-        Call<VehicleDTO[][]> call_async = this.apiService.findAllVehiclesByUser(this.user.getEmail());
-        call_async.enqueue(new Callback<VehicleDTO[][]>() {
+        Call<VehicleDTO[][]> callAsync = this.apiService.findAllVehiclesByUser(this.user.getEmail());
+        callAsync.enqueue(new Callback<VehicleDTO[][]>() {
             @Override
             public void onResponse(Call<VehicleDTO[][]> call, Response<VehicleDTO[][]> response) {
                 if (response.isSuccessful()) {

@@ -78,8 +78,8 @@ public class StayActivity extends AppCompatActivity {
     }
 
     private void resumeStay() {
-        Call<StayDTO> call_async = this.apiService.resumeStay(this.activeStay.getId());
-        call_async.enqueue(new Callback<StayDTO>() {
+        Call<StayDTO> callAsync = this.apiService.resumeStay(this.activeStay.getId());
+        callAsync.enqueue(new Callback<StayDTO>() {
             @Override
             public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
                 if (!response.isSuccessful()) {
@@ -96,8 +96,8 @@ public class StayActivity extends AppCompatActivity {
     }
 
     public void endStay(View view) {
-        Call<StayDTO> call_async = this.apiService.endStay(this.activeStay.getId());
-        call_async.enqueue(new Callback<StayDTO>() {
+        Call<StayDTO> callAsync = this.apiService.endStay(this.activeStay.getId());
+        callAsync.enqueue(new Callback<StayDTO>() {
             @Override
             public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
                 if (response.isSuccessful()) {

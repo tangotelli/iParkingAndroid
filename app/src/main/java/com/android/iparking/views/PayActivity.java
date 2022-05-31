@@ -45,8 +45,8 @@ public class PayActivity extends AppCompatActivity {
     }
 
     private void pay(CardDTO cardDTO) {
-        Call<Void> call_async = this.apiService.pay(cardDTO);
-        call_async.enqueue(new Callback<Void>() {
+        Call<Void> callAsync = this.apiService.pay(cardDTO);
+        callAsync.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
