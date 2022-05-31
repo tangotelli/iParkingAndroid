@@ -47,4 +47,6 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
     //Google Maps
     implementation 'com.google.android.gms:play-services-maps:18.0.2'
+    //Akexorcist Directions API
+    implementation 'com.akexorcist:google-direction-library:1.2.1'
 }

@@ -1,5 +1,7 @@
 package com.android.iparking.views;
 
+import static com.android.iparking.BuildConfig.MAPS_API_KEY;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
@@ -18,6 +21,12 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.googledirection.DirectionCallback;
+import com.akexorcist.googledirection.GoogleDirection;
+import com.akexorcist.googledirection.constant.TransportMode;
+import com.akexorcist.googledirection.model.Direction;
+import com.akexorcist.googledirection.model.Leg;
+import com.akexorcist.googledirection.util.DirectionConverter;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
@@ -37,6 +46,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -61,6 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private List<Marker> markers;
     private BottomSheetBehavior bottomSheetBehavior;
     private ActivityResultLauncher<Intent> activityResultLauncher;
+    private Polyline route;
 
     private static final float STREETS_ZOOM_LEVEL = 15;
 
@@ -104,6 +116,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void setUpMapListeners() {
         this.map.setOnMyLocationButtonClickListener(() -> {
             if (deviceLocation != null) {
+                if (route != null) {
+                    route.remove();
+                }
                 this.zoomToCurrentLocation();
                 this.findClosestParkings();
                 return true;
@@ -115,6 +130,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public boolean onMarkerClick(@NonNull Marker marker) {
                 if (marker.getTag() != null) {
+                    if (route != null) {
+                        route.remove();
+                    }
                     showParkingDetail((Parking) marker.getTag());
                     return true;
                 } else {
@@ -174,9 +192,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void zoomToCurrentLocation() {
-        LatLng current = new LatLng(deviceLocation.getLatitude(), deviceLocation.getLongitude());
-        map.moveCamera(CameraUpdateFactory.newLatLng(current));
-        map.moveCamera(CameraUpdateFactory.zoomTo(STREETS_ZOOM_LEVEL));
+        LatLng current = new LatLng(this.deviceLocation.getLatitude(),
+                this.deviceLocation.getLongitude());
+        this.map.moveCamera(CameraUpdateFactory.newLatLng(current));
+        this.map.moveCamera(CameraUpdateFactory.zoomTo(STREETS_ZOOM_LEVEL));
     }
 
     @SuppressLint("MissingPermission")
@@ -245,5 +264,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     public void showProfile(View view) {
         this.createIntent(UserActivity.class);
+    }
+
+    public void showRoute(View view) {
+        GoogleDirection.withServerKey(MAPS_API_KEY)
+                .from(new LatLng(this.deviceLocation.getLatitude(),
+                        this.deviceLocation.getLongitude()))
+                .to(this.selectedParking.getParkingLocation().toLatLng())
+                .transportMode(TransportMode.DRIVING)
+                .execute(new DirectionCallback() {
+                    @Override
+                    public void onDirectionSuccess(Direction direction) {
+                        if (direction.isOK()) {
+                            drawRoute(direction);
+                        }
+                    }
+
+                    @Override
+                    public void onDirectionFailure(Throwable t) {
+                        Snackbar.make(
+                                findViewById(android.R.id.content),
+                                //getString(R.string.connection_failure),
+                                "ERROR " + t.getMessage(),
+                                Snackbar.LENGTH_LONG
+                        ).show();
+                    }
+                });
+    }
+
+    private void drawRoute(Direction direction) {
+        ArrayList<LatLng> directionPositionList =
+                direction.getRouteList().get(0).getLegList().get(0)
+                        .getDirectionPoint();
+        this.route = this.map.addPolyline(DirectionConverter
+                .createPolyline(this, directionPositionList, 5, Color.RED));
     }
 }
