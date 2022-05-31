@@ -100,7 +100,7 @@ public class VehicleListAdapter extends BaseAdapter {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                ((UserActivity) context).processFailedResponse(t);
+                ((UserActivity) context).processFailedResponse();
             }
         });
     }

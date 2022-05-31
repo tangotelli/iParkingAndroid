@@ -71,23 +71,16 @@ public class RegisterVehicleActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VehicleDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
 
     private void processUnsuccesfulResponse(int code) {
         if (code == 400) {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.register_failed),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.register_failed));
         }
     }
 }

@@ -42,11 +42,8 @@ public class SigninActivity extends AppCompatActivity
         if (this.isFormFilled()) {
             this.signin();
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.missing_fields),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.missing_fields));
         }
     }
 
@@ -75,11 +72,8 @@ public class SigninActivity extends AppCompatActivity
                     .build();
             this.signin(user);
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.passwords_do_not_match),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.passwords_do_not_match));
         }
     }
 
@@ -97,11 +91,8 @@ public class SigninActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.connection_failure),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -122,11 +113,8 @@ public class SigninActivity extends AppCompatActivity
 
     private void processUnsuccesfulResponse(int code) {
         if (code == 400) {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.signin_failure),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.signin_failure));
         }
     }
 
@@ -138,11 +126,8 @@ public class SigninActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.showMap();
             } else {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.permission_denied),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.permission_denied));
                 this.askForPermissions();
             }
         }

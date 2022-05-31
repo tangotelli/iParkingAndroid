@@ -44,11 +44,8 @@ public class LoginActivity extends AppCompatActivity
             String password = ((EditText) findViewById(R.id.etPassword)).getText().toString();
             this.login(email, password);
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.missing_fields),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.missing_fields));
         }
     }
 
@@ -72,11 +69,8 @@ public class LoginActivity extends AppCompatActivity
 
             @Override
             public void onFailure(Call<UserDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.connection_failure),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -97,11 +91,8 @@ public class LoginActivity extends AppCompatActivity
 
     private void processUnsuccesfulResponse(int code) {
         if (code == 401) {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.auth_failure),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.auth_failure));
         }
     }
 
@@ -113,11 +104,8 @@ public class LoginActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.showMap();
             } else {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.permission_denied),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.permission_denied));
                 this.askForPermissions();
             }
         }

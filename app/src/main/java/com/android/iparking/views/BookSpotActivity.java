@@ -78,12 +78,8 @@ public class BookSpotActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VehicleDTO[][]> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -147,36 +143,24 @@ public class BookSpotActivity extends AppCompatActivity {
                 result -> {
                     switch (result.getResultCode()) {
                         case PayActivity.PAYMENT_COMPLETED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_completed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.pay_completed));
                             this.bookSpot();
                             break;
                         case PayActivity.PAYMENT_FAILED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_failed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.pay_failed));
                             break;
                         case RegisterVehicleActivity.VEHICLE_REGISTERED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.registered_vehicle),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.registered_vehicle));
                             this.adapter.clear();
                             ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
                             this.findUserVehicles();
                             break;
                         default:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.canceled),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.canceled));
                     }
                 });
     }
@@ -188,11 +172,8 @@ public class BookSpotActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BookingDTO> call, Response<BookingDTO> response) {
                 if (response.isSuccessful()) {
-                    Snackbar.make(
-                            findViewById(android.R.id.content),
-                            getString(R.string.booking_complete),
-                            Snackbar.LENGTH_LONG
-                    ).show();
+                    SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                            getString(R.string.booking_complete));
                 } else {
                     processUnsuccesfulResponse(response.code());
                 }
@@ -200,12 +181,8 @@ public class BookSpotActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<BookingDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -213,25 +190,16 @@ public class BookSpotActivity extends AppCompatActivity {
     private void processUnsuccesfulResponse(int code) {
         switch (code) {
             case 403:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.existing_booking),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.existing_booking));
                 break;
             case 404:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.wrong_data_provided),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.wrong_data_provided));
                 break;
             case 412:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.no_empty_spots),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.no_empty_spots));
                 break;
         }
     }
@@ -250,11 +218,8 @@ public class BookSpotActivity extends AppCompatActivity {
             intent.putExtra("price", this.parking.getBookingFare());
             this.activityResultLauncher.launch(intent);
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.choose_vehicle),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.choose_vehicle));
         }
     }
 

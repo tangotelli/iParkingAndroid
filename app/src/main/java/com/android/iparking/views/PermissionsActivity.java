@@ -50,11 +50,8 @@ public class PermissionsActivity extends AppCompatActivity
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 this.showMap();
             } else {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.permission_denied),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.permission_denied));
             }
         }
     }

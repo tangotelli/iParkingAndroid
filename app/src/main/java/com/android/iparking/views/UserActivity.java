@@ -62,12 +62,8 @@ public class UserActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VehicleDTO[][]> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -86,18 +82,12 @@ public class UserActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RegisterVehicleActivity.VEHICLE_REGISTERED) {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.registered_vehicle),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                getString(R.string.registered_vehicle));
                         this.findUserVehicles();
                     } else {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.canceled),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                getString(R.string.canceled));
                     }
                 });
     }
@@ -108,31 +98,21 @@ public class UserActivity extends AppCompatActivity {
         this.activityResultLauncher.launch(intent);
     }
 
-    public void processFailedResponse(Throwable t) {
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                //getString(R.string.connection_failure),
-                "ERROR " + t.getMessage(),
-                Snackbar.LENGTH_LONG
-        ).show();
+    public void processFailedResponse() {
+        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                getString(R.string.connection_failure));
     }
 
     public void processUnsuccesfulResponse(int code) {
         if (code == 404) {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.vehicle_not_found),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.vehicle_not_found));
         }
     }
 
     public void processSuccesfulResponse() {
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                getString(R.string.vehicle_removed),
-                Snackbar.LENGTH_LONG
-        ).show();
+        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                getString(R.string.vehicle_removed));
         this.findUserVehicles();
     }
 }

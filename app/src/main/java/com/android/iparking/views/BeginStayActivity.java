@@ -81,12 +81,8 @@ public class BeginStayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<VehicleDTO[][]> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -149,20 +145,14 @@ public class BeginStayActivity extends AppCompatActivity {
                 new ActivityResultContracts.StartActivityForResult(),
                 result -> {
                     if (result.getResultCode() == RegisterVehicleActivity.VEHICLE_REGISTERED) {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.registered_vehicle),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                getString(R.string.registered_vehicle));
                         this.adapter.clear();
                         ((Spinner) findViewById(R.id.spinnerBookingVehicle)).setAdapter(null);
                         this.findUserVehicles();
                     } else {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                getString(R.string.canceled),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                getString(R.string.canceled));
                     }
                 });
     }
@@ -182,22 +172,15 @@ public class BeginStayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<StayDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
 
     private void processSuccesfulResponse(StayDTO stayDTO) {
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                getString(R.string.stay_began),
-                Snackbar.LENGTH_LONG
-        ).show();
+        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                getString(R.string.stay_began));
         Intent intent = new Intent().putExtra("stay", Stay.activeStayFromDTO(stayDTO));
         setResult(STAY_BEGUN, intent);
         finish();
@@ -206,18 +189,12 @@ public class BeginStayActivity extends AppCompatActivity {
     private void processUnsuccesfulResponse(int code) {
         switch (code) {
             case 403:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.existing_stay),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.existing_stay));
                 break;
             case 404:
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        getString(R.string.wrong_data_provided),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.wrong_data_provided));
                 break;
         }
     }
@@ -234,11 +211,8 @@ public class BeginStayActivity extends AppCompatActivity {
         if (this.selectedVehicle != null) {
             this.beginStay();
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.choose_vehicle),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.choose_vehicle));
         }
     }
 

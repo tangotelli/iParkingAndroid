@@ -165,12 +165,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
             @Override
             public void onFailure(Call<ParkingDTO[][]> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -282,12 +278,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     @Override
                     public void onDirectionFailure(Throwable t) {
-                        Snackbar.make(
-                                findViewById(android.R.id.content),
-                                //getString(R.string.connection_failure),
-                                "ERROR " + t.getMessage(),
-                                Snackbar.LENGTH_LONG
-                        ).show();
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content), t);
                     }
                 });
     }

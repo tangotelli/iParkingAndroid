@@ -39,11 +39,8 @@ public class PayActivity extends AppCompatActivity {
             CardDTO cardDTO = this.getCardData();
             this.pay(cardDTO);
         } else {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.missing_fields),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.missing_fields));
         }
     }
 
@@ -62,12 +59,8 @@ public class PayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }

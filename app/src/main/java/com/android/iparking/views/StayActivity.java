@@ -58,30 +58,21 @@ public class StayActivity extends AppCompatActivity {
                             this.stayEndedOperations();
                             break;
                         case PayActivity.PAYMENT_FAILED:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.pay_failed),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.pay_failed));
                             this.resumeStay();
                             break;
                         default:
-                            Snackbar.make(
-                                    findViewById(android.R.id.content),
-                                    getString(R.string.canceled),
-                                    Snackbar.LENGTH_LONG
-                            ).show();
+                            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                    getString(R.string.canceled));
                             this.resumeStay();
                     }
                 });
     }
 
     private void stayEndedOperations() {
-        Snackbar.make(
-                findViewById(android.R.id.content),
-                getString(R.string.stay_ended),
-                Snackbar.LENGTH_LONG
-        ).show();
+        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                getString(R.string.stay_ended));
         findViewById(R.id.buttonEndStay).setEnabled(false);
         findViewById(R.id.buttonShowMap).setEnabled(true);
     }
@@ -98,12 +89,8 @@ public class StayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<StayDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -122,12 +109,8 @@ public class StayActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<StayDTO> call, Throwable t) {
-                Snackbar.make(
-                        findViewById(android.R.id.content),
-                        //getString(R.string.connection_failure),
-                        "ERROR " + t.getMessage(),
-                        Snackbar.LENGTH_LONG
-                ).show();
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.connection_failure));
             }
         });
     }
@@ -145,11 +128,8 @@ public class StayActivity extends AppCompatActivity {
 
     private void processUnsuccesfulResponse(int code) {
         if (code == 404) {
-            Snackbar.make(
-                    findViewById(android.R.id.content),
-                    getString(R.string.no_stay_found),
-                    Snackbar.LENGTH_LONG
-            ).show();
+            SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                    getString(R.string.no_stay_found));
         }
     }
 
