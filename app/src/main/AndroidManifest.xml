@@ -12,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.IParking">
+        android:theme="@style/Theme.IParking"
+        android:usesCleartextTraffic="false">
         <activity
             android:name=".views.UserActivity"
             android:exported="true" />
