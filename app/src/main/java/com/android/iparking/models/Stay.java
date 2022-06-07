@@ -11,7 +11,7 @@ public class Stay implements Serializable {
     private String vehicle;
     private String beginning;
     private String end;
-    private String price;
+    private Double price;
 
     public String getId() {
         return id;
@@ -53,11 +53,11 @@ public class Stay implements Serializable {
         this.end = end;
     }
 
-    public String getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -122,7 +122,7 @@ public class Stay implements Serializable {
 
         @Override
         public StayBuilders.Optional price(String price) {
-            this.stay.setPrice(price);
+            this.stay.setPrice(Double.valueOf(price));
             return this;
         }
 

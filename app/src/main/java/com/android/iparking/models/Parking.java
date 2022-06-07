@@ -68,7 +68,7 @@ public class Parking implements Serializable {
                 .address(parkingDTO.getAddress())
                 .bookingFare(parkingDTO.getBookingFare())
                 .stayFare(parkingDTO.getStayFare())
-                .location(ParkingLocation.fromPojo(parkingDTO.getLocation()))
+                .location(ParkingLocation.fromDTO(parkingDTO.getLocation()))
                 .build();
     }
 

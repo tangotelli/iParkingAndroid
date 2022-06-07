@@ -31,7 +31,7 @@ public class ParkingLocation implements Serializable {
         this.longitude = longitude;
     }
 
-    public static ParkingLocation fromPojo(LocationDTO locationDTO) {
+    public static ParkingLocation fromDTO(LocationDTO locationDTO) {
         return new ParkingLocation(locationDTO.getLatitude(), locationDTO.getLongitude());
     }
 

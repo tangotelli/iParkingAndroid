@@ -119,7 +119,7 @@ public class StayActivity extends AppCompatActivity {
         if (!stayDTO.getPrice().equals("null")) {
             Stay finishedStay = Stay.finishedStayFromDTO(stayDTO);
             Intent intent = new Intent(StayActivity.this, PayActivity.class);
-            intent.putExtra("price", Double.valueOf(finishedStay.getPrice()));
+            intent.putExtra("price", finishedStay.getPrice());
             this.activityResultLauncher.launch(intent);
         } else {
             this.stayEndedOperations();
