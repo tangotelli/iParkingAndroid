@@ -15,7 +15,7 @@ public class RetrofitFactory {
 
     public static APIService setUpRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(API_BASE_URL)
+                .baseUrl("https://192.168.1.36:8000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(MyHttpClient.getUnsafeOkHttpClient())
                 .build();

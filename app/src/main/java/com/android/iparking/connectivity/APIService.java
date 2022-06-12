@@ -1,6 +1,7 @@
 package com.android.iparking.connectivity;
 
 import com.android.iparking.dtos.BookingDTO;
+import com.android.iparking.dtos.OccupationDTO;
 import com.android.iparking.dtos.OperationFormDTO;
 import com.android.iparking.dtos.CardDTO;
 import com.android.iparking.dtos.RegisterVehicleFormDTO;
@@ -27,11 +28,14 @@ public interface APIService {
     @GET("/parking/all")
     Call<ParkingDTO[][]> findAll();
 
-    @POST("/user/signin")
-    Call<UserDTO> signin(@Body User user);
+    @GET("/parking/occupation/{id}")
+    Call<OccupationDTO> getLevelOfOccupation(@Path("id") String parkingId);
 
     @GET("/vehicle/get/{email}")
     Call<VehicleDTO[][]> findAllVehiclesByUser(@Path("email") String email);
+
+    @POST("/user/signin")
+    Call<UserDTO> signin(@Body User user);
 
     @POST("/payment/pay")
     Call<Void> pay(@Body CardDTO cardDTO);

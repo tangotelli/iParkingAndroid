@@ -18,6 +18,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Looper;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -30,6 +31,7 @@ import com.akexorcist.googledirection.util.DirectionConverter;
 import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
+import com.android.iparking.dtos.OccupationDTO;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.Stay;
 import com.android.iparking.models.User;
@@ -134,6 +136,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         route.remove();
                     }
                     showParkingDetail((Parking) marker.getTag());
+                    getLevelOfOccupation((Parking) marker.getTag());
                     return true;
                 } else {
                     return false;
@@ -145,12 +148,61 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void showParkingDetail(Parking parking) {
         this.selectedParking = parking;
         ((TextView) findViewById(R.id.bottomSheetName)).setText(parking.getName());
+        ((TextView) findViewById(R.id.bottomSheetOccupation)).setText("");
         ((TextView) findViewById(R.id.bottomSheetAddress)).setText(parking.getAddress());
         ((TextView) findViewById(R.id.bottomSheetBookingFare))
                 .setText(String.format(getString(R.string.booking_fare), "" + parking.getBookingFare()));
         ((TextView) findViewById(R.id.bottomSheetStayFare))
                 .setText(String.format(getString(R.string.stay_fare), "" + parking.getStayFare()));
         this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED);
+    }
+
+    private void getLevelOfOccupation(Parking parking) {
+        Call<OccupationDTO> callAsync = apiService.getLevelOfOccupation(parking.getId());
+        callAsync.enqueue(new Callback<OccupationDTO>() {
+            @Override
+            public void onResponse(Call<OccupationDTO> call, Response<OccupationDTO> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    showOccupation(response.body());
+                } else {
+                    SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                            getString(R.string.occupation_failure));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OccupationDTO> call, Throwable t) {
+                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                        getString(R.string.occupation_failure));
+            }
+        });
+    }
+
+    private void showOccupation(OccupationDTO body) {
+        if (body.getOccupationPercentage() != 100) {
+            this.freeSpotsAvailable();
+        } else {
+            this.noFreeSpotsAvailable();
+        }
+    }
+
+    private void freeSpotsAvailable() {
+        ((TextView) findViewById(R.id.bottomSheetOccupation))
+                .setText(getString(R.string.free_spots));
+        ((TextView) findViewById(R.id.bottomSheetOccupation))
+                .setTextColor(Color.GREEN);
+        ((Button) findViewById(R.id.buttonStay)).setEnabled(true);
+        ((Button) findViewById(R.id.buttonBook)).setEnabled(true);
+    }
+
+    private void noFreeSpotsAvailable() {
+        ((TextView) findViewById(R.id.bottomSheetOccupation))
+                .setText(getString(R.string.no_spots));
+        ((TextView) findViewById(R.id.bottomSheetOccupation))
+                .setTextColor(Color.RED);
+        ((Button) findViewById(R.id.buttonStay)).setEnabled(false);
+        ((Button) findViewById(R.id.buttonBook)).setEnabled(false);
     }
 
     private void findClosestParkings() {

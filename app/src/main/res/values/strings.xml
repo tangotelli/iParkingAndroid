@@ -27,6 +27,8 @@
     <string name="stay_button">Estancia</string>
     <string name="booking_fare">Reservas: %s euros</string>
     <string name="stay_fare">Estancias: %s euros/minuto</string>
+    <string name="free_spots">Plazas libres disponibles</string>
+    <string name="no_spots">No hay plazas libres disponibles</string>
     <!-- Book Spot Activity -->
     <string name="book_spot">Reserva una plaza</string>
     <string name="parking">Parking</string>
@@ -80,6 +82,7 @@
     <string name="signin_failure">El email introducido pertenece a otra cuenta existente.</string>
     <string name="missing_fields">Rellene todos los campos del formulario</string>
     <string name="canceled">Operación cancelada</string>
+    <string name="occupation_failure">No se pudo recuperar el nivel de ocupación</string>
     <!-- Permisos -->
     <string name="permission_accepted">Permisos aprobados</string>
     <string name="permission_denied">Permisos denegados</string>
