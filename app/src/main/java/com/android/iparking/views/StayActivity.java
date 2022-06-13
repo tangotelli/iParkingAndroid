@@ -25,7 +25,6 @@ public class StayActivity extends AppCompatActivity {
 
     private Stay activeStay;
     private User user;
-    private double stayFare;
     private APIService apiService;
     private ActivityResultLauncher<Intent> activityResultLauncher;
 
@@ -35,7 +34,6 @@ public class StayActivity extends AppCompatActivity {
         setContentView(R.layout.activity_stay);
         this.activeStay = (Stay) getIntent().getSerializableExtra("stay");
         this.user = (User) getIntent().getSerializableExtra("user");
-        this.stayFare = getIntent().getDoubleExtra("stayFare", 0.0);
         this.showInformation();
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.registerActivityResultLauncher();
@@ -44,7 +42,7 @@ public class StayActivity extends AppCompatActivity {
     private void showInformation() {
         ((TextView) findViewById(R.id.tvParking)).setText(this.activeStay.getParking());
         ((TextView) findViewById(R.id.tvStayFare))
-                .setText(String.format(getString(R.string.fare_long), this.stayFare + ""));
+                .setText(String.format(getString(R.string.fare_long), this.activeStay.getFare() + ""));
         ((TextView) findViewById(R.id.tvStartDate)).setText(this.activeStay.getBeginning());
         ((TextView) findViewById(R.id.tvVehicle)).setText(this.activeStay.getVehicle());
     }

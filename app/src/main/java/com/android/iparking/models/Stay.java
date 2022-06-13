@@ -12,6 +12,7 @@ public class Stay implements Serializable {
     private String beginning;
     private String end;
     private Double price;
+    private Double fare;
 
     public String getId() {
         return id;
@@ -61,12 +62,21 @@ public class Stay implements Serializable {
         this.price = price;
     }
 
+    public Double getFare() {
+        return fare;
+    }
+
+    public void setFare(Double fare) {
+        this.fare = fare;
+    }
+
     public static Stay activeStayFromDTO(StayDTO stayDTO) {
         return new StayBuilder()
                 .id(stayDTO.getId())
                 .parking(stayDTO.getParking())
                 .vehicle(stayDTO.getVehicle())
                 .beginning(stayDTO.getBeginning())
+                .fare(stayDTO.getFare())
                 .build();
     }
 
@@ -123,6 +133,12 @@ public class Stay implements Serializable {
         @Override
         public StayBuilders.Optional price(String price) {
             this.stay.setPrice(Double.valueOf(price));
+            return this;
+        }
+
+        @Override
+        public StayBuilders.Optional fare(String fare) {
+            this.stay.setFare(Double.valueOf(fare));
             return this;
         }
 

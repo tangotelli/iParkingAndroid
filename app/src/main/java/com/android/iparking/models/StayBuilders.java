@@ -23,6 +23,8 @@ public interface StayBuilders {
 
         StayBuilders.Optional price(String price);
 
+        StayBuilders.Optional fare(String fare);
+
         Stay build();
     }
 

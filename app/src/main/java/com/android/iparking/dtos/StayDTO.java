@@ -34,6 +34,9 @@ public class StayDTO {
     @SerializedName("Price")
     @Expose
     private String price;
+    @SerializedName("Fare")
+    @Expose
+    private String fare;
 
     public String getId() {
         return id;
@@ -107,4 +110,11 @@ public class StayDTO {
         this.price = price;
     }
 
+    public String getFare() {
+        return fare;
+    }
+
+    public void setFare(String fare) {
+        this.fare = fare;
+    }
 }

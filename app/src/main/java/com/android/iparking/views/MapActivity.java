@@ -32,6 +32,7 @@ import com.android.iparking.R;
 import com.android.iparking.connectivity.APIService;
 import com.android.iparking.connectivity.RetrofitFactory;
 import com.android.iparking.dtos.OccupationDTO;
+import com.android.iparking.dtos.StayDTO;
 import com.android.iparking.models.Parking;
 import com.android.iparking.models.Stay;
 import com.android.iparking.models.User;
@@ -92,12 +93,31 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         this.apiService = RetrofitFactory.setUpRetrofit();
         this.markers = new ArrayList<>();
         this.registerActivityResultLauncher();
+        this.findActiveStay();
     }
 
     private void setUpBottomSheet() {
         LinearLayout bottomSheet = (LinearLayout) findViewById(R.id.bottomSheet);
         this.bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
         this.bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
+    private void findActiveStay() {
+        Call<StayDTO> callAsync = apiService.findActiveStayByUser(user.getEmail());
+        callAsync.enqueue(new Callback<StayDTO>() {
+            @Override
+            public void onResponse(Call<StayDTO> call, Response<StayDTO> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    showStay(Stay.activeStayFromDTO(response.body()));
+                }
+            }
+
+            @Override
+            public void onFailure(Call<StayDTO> call, Throwable t) {
+                //empty for framework
+            }
+        });
     }
 
     @SuppressLint("MissingPermission")
@@ -306,7 +326,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private void showStay(Stay stay) {
         Intent intent = new Intent(MapActivity.this, StayActivity.class);
         intent.putExtra("user", this.user);
-        intent.putExtra("stayFare", this.selectedParking.getStayFare());
         intent.putExtra("stay", stay);
         startActivity(intent);
         finish();
