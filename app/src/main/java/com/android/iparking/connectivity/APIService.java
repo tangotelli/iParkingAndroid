@@ -28,11 +28,18 @@ public interface APIService {
     @GET("/parking/all")
     Call<ParkingDTO[][]> findAll();
 
+    @GET("/parking/closest")
+    Call<ParkingDTO[][]> findClosestParkings(@Query("latitude") String latitude,
+                                             @Query("longitude") String longitude);
+
     @GET("/parking/occupation/{id}")
     Call<OccupationDTO> getLevelOfOccupation(@Path("id") String parkingId);
 
     @GET("/vehicle/get/{email}")
     Call<VehicleDTO[][]> findAllVehiclesByUser(@Path("email") String email);
+
+    @GET("/stay/get")
+    Call<StayDTO> findActiveStayByUser(@Query("email") String email);
 
     @POST("/user/signin")
     Call<UserDTO> signin(@Body User user);
