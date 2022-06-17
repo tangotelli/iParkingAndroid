@@ -71,7 +71,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private User user;
     private Parking selectedParking;
     private APIService apiService;
-    private List<Parking> parkings;
     private List<Marker> markers;
     private BottomSheetBehavior bottomSheetBehavior;
     private ActivityResultLauncher<Intent> activityResultLauncher;
@@ -246,11 +245,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     private void showClosestParkings(ParkingDTO[][] body) {
-        this.parkings = Arrays.stream(body)
+        List<Parking> parkings = Arrays.stream(body)
                 .flatMap(Stream::of)
                 .map(Parking::fromDTO)
                 .collect(Collectors.toList());
-        if (!(this.parkings.isEmpty())) {
+        if (!(parkings.isEmpty())) {
             for (Parking parking : parkings) {
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(parking.getParkingLocation().toLatLng())

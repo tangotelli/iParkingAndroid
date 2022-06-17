@@ -25,9 +25,6 @@ public interface APIService {
     @GET("/user/login")
     Call<UserDTO> login(@Query("email") String email, @Query("password") String password);
 
-    @GET("/parking/all")
-    Call<ParkingDTO[][]> findAll();
-
     @GET("/parking/closest")
     Call<ParkingDTO[][]> findClosestParkings(@Query("latitude") String latitude,
                                              @Query("longitude") String longitude);
