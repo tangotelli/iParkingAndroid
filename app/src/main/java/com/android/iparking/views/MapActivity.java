@@ -211,8 +211,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .setText(getString(R.string.free_spots));
         ((TextView) findViewById(R.id.bottomSheetOccupation))
                 .setTextColor(Color.GREEN);
-        ((Button) findViewById(R.id.buttonStay)).setEnabled(true);
-        ((Button) findViewById(R.id.buttonBook)).setEnabled(true);
+        findViewById(R.id.buttonStay).setEnabled(true);
+        findViewById(R.id.buttonBook).setEnabled(true);
     }
 
     private void noFreeSpotsAvailable() {
@@ -220,8 +220,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 .setText(getString(R.string.no_spots));
         ((TextView) findViewById(R.id.bottomSheetOccupation))
                 .setTextColor(Color.RED);
-        ((Button) findViewById(R.id.buttonStay)).setEnabled(false);
-        ((Button) findViewById(R.id.buttonBook)).setEnabled(false);
+        findViewById(R.id.buttonStay).setEnabled(false);
+        findViewById(R.id.buttonBook).setEnabled(false);
     }
 
     private void findClosestParkings() {
@@ -318,6 +318,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     if (result.getResultCode() == BeginStayActivity.STAY_BEGUN) {
                         assert result.getData() != null;
                         this.showStay((Stay) result.getData().getSerializableExtra("stay"));
+                    } else if (result.getResultCode() == BookSpotActivity.SPOT_BOOKED) {
+                        SnackbarGenerator.snackbar(findViewById(android.R.id.content),
+                                getString(R.string.booking_complete));
                     }
                 });
     }
