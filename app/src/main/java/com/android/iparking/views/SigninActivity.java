@@ -23,19 +23,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class SigninActivity extends AppCompatActivity
-        implements ActivityCompat.OnRequestPermissionsResultCallback {
-
-    private User user;
-    private APIService apiService;
-
-    private static final int LOCATION_PERMISSION_CODE = 100;
+public class SigninActivity extends AuthenticationActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
-        this.apiService = RetrofitFactory.setUpRetrofit();
     }
 
     public void signin(View view) {
@@ -79,39 +72,16 @@ public class SigninActivity extends AppCompatActivity
 
     private void signin(User user) {
         Call<UserDTO> callAsync = apiService.signin(user);
-        callAsync.enqueue(new Callback<UserDTO>() {
-            @Override
-            public void onResponse(Call<UserDTO> call, Response<UserDTO> response) {
-                if (response.isSuccessful()) {
-                    processSuccesfulResponse(response.body());
-                } else {
-                    processUnsuccesfulResponse(response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<UserDTO> call, Throwable t) {
-                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
-                        getString(R.string.connection_failure));
-            }
-        });
+        this.authenticate(callAsync);
     }
 
-    private void processSuccesfulResponse(UserDTO userDTO) {
-        this.user = User.fromDTO(userDTO);
-        if (ContextCompat
-                .checkSelfPermission(SigninActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat
-                    .requestPermissions(SigninActivity.this,
-                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                            LOCATION_PERMISSION_CODE);
-        } else {
-            this.showMap();
-        }
+    @Override
+    protected void processSuccesfulResponse(UserDTO body) {
+        this.processSuccesfulResponse(body, SigninActivity.this);
     }
 
-    private void processUnsuccesfulResponse(int code) {
+    @Override
+    protected void processUnsuccesfulResponse(int code) {
         if (code == 400) {
             SnackbarGenerator.snackbar(findViewById(android.R.id.content),
                     getString(R.string.signin_failure));
@@ -119,26 +89,13 @@ public class SigninActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                this.showMap();
-            } else {
-                SnackbarGenerator.snackbar(findViewById(android.R.id.content),
-                        getString(R.string.permission_denied));
-                this.askForPermissions();
-            }
-        }
-    }
-
-    private void showMap() {
+    protected void showMap() {
         finish();
         this.createIntent(MapActivity.class);
     }
 
-    private void askForPermissions() {
+    @Override
+    protected void askForPermissions() {
         finish();
         this.createIntent(PermissionsActivity.class);
     }
