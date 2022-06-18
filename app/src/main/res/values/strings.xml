@@ -19,6 +19,11 @@
         \n
         Si desea utilizar la aplicación, pulse el botón inferior y acepte conceder a iParking los
         permisos de ubicación. Si no desea conceder estos permisos, no podrá utilizar la aplicación.
+        \n
+        \n
+        Si rechaza por segunda vez los permisos de ubicación, no podrá concederlos desde esta
+        aplicación. Llegada esta situación, para conceder los permisos deberá hacerlo desde los
+        ajustes de su dispositivo.
     </string>
     <string name="permissions_button">Permisos</string>
     <!-- Map Activity -->
