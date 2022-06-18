@@ -86,9 +86,9 @@ public class VehicleListAdapter extends BaseAdapter {
     }
 
     private void removeVehicle(View view) {
-        Call<Void> call_async = this.apiService
+        Call<Void> callAsync = this.apiService
                 .deleteVehicle(this.vehicles.get(this.clickedCard).getId());
-        call_async.enqueue(new Callback<Void>() {
+        callAsync.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
